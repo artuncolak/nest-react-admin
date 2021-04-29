@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  a {
+    @apply text-blue-600 underline;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply p-3 bg-blue-500 rounded-md focus:outline-none text-white;
+    @apply hover:bg-blue-700 transition-all;
+    @apply focus:ring disabled:opacity-50;
+  }
+  .input {
+    @apply rounded-md border-gray-300 transition-colors disabled:opacity-50;
+  }
+  .card {
+    @apply p-5 rounded-md shadow;
+  }
+}
