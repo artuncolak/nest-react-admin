@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Role } from 'src/enums/role.enum';
 import { PasswordEncoder } from 'src/shared/password-encoder/password.encoder';
 
 import { CreateUserDto, UpdateUserDto } from './user.dto';
@@ -24,7 +25,7 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    return User.find();
+    return User.find({ where: [{ role: Role.User }, { role: Role.Editor }] });
   }
 
   async findById(id: string): Promise<User> {

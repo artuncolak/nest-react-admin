@@ -23,7 +23,6 @@ export default function Users() {
   const [error, setError] = useState<string>();
 
   const saveUser = async (createUserRequest: CreateUserRequest) => {
-    console.log(createUserRequest);
     try {
       await userService.save(createUserRequest);
       setAddUserShow(false);
@@ -43,10 +42,11 @@ export default function Users() {
         <Plus /> Add User
       </button>
 
-      <div className="border rounded-lg mt-5">
+      <div className="border rounded-lg mt-5 shadow">
         <UsersTable data={data} isLoading={isLoading} />
       </div>
 
+      {/* Add User Modal */}
       <Modal show={addUserShow}>
         <div className="flex">
           <h1 className="font-semibold mb-3">Add User</h1>

@@ -35,6 +35,6 @@
     @apply rounded-md border-gray-300 transition-colors disabled:opacity-50;
   }
   .card {
-    @apply p-5 rounded-md bg-white;
+    @apply p-5 rounded-md bg-white border;
   }
 }
