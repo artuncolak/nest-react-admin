@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { AlertTriangle, Loader, X } from "react-feather";
 import { useForm } from "react-hook-form";
-import UpdateUserRequest from "../../models/UpdateUserRequest";
-import User from "../../models/User";
-import userService from "../../services/UserService";
+import Course from "../../models/Course";
+import UpdateCourseRequest from "../../models/UpdateCourseRequest";
+import courseService from "../../services/CourseService";
 import Modal from "../shared/Modal";
 
 interface UsersTableProps {
-  data: User[];
+  data: Course[];
   isLoading: boolean;
 }
 
-export default function UsersTable({ data, isLoading }: UsersTableProps) {
+export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User>();
+  const [selectedCourse, setSelectedCourse] = useState<Course>();
   const [error, setError] = useState<string>();
   const [updateShow, setUpdateShow] = useState<boolean>(false);
 
@@ -23,26 +23,26 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<UpdateUserRequest>();
+  } = useForm<UpdateCourseRequest>();
 
-  const handleDeleteUser = async () => {
+  const handleDeleteCourse = async () => {
     try {
       setIsDeleting(true);
-      await userService.delete(selectedUser.id);
+      await courseService.delete(selectedCourse.id);
       setIsDeleting(false);
       setDeleteShow(false);
-      setSelectedUser(null);
+      setSelectedCourse(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
     }
   };
 
-  const handleUpdateUser = async (updateUserRequest: UpdateUserRequest) => {
+  const handleUpdateUser = async (updateCourseRequest: UpdateCourseRequest) => {
     try {
-      await userService.update(selectedUser.id, updateUserRequest);
+      await courseService.update(selectedCourse.id, updateCourseRequest);
       setUpdateShow(false);
-      setSelectedUser(null);
+      setSelectedCourse(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
@@ -64,19 +64,13 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Username
+              Description
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Status
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Role
+              Date Created
             </th>
             <th scope="col" className="relative px-6 py-3">
               <span className="sr-only">Edit</span>
@@ -86,40 +80,24 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
         <tbody className="divide-y divide-gray-200">
           {isLoading
             ? null
-            : data.map((user) => {
-                const {
-                  id,
-                  firstName,
-                  lastName,
-                  username,
-                  isActive,
-                  role,
-                } = user;
+            : data.map((course) => {
+                const { id, name, description, dateCreated } = course;
                 return (
                   <tr key={id}>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{`${firstName} ${lastName}`}</td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {username}
+                      {name}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {isActive ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          Inactive
-                        </span>
-                      )}
+                      {description}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {role}
+                      {new Date(dateCreated).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-sm text-right font-medium">
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
                         onClick={() => {
-                          setSelectedUser(user);
+                          setSelectedCourse(course);
                           setUpdateShow(true);
                         }}
                       >
@@ -128,7 +106,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
                       <button
                         className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                         onClick={() => {
-                          setSelectedUser(user);
+                          setSelectedCourse(course);
                           setDeleteShow(true);
                         }}
                       >
@@ -145,14 +123,16 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
           <h1>Empty</h1>
         </div>
       ) : null}
+
+      {/* Delete Course Modal */}
       <Modal show={deleteShow}>
         <AlertTriangle size={30} className="text-red-500 mr-5 fixed" />
         <div className="ml-10">
-          <h3 className="mb-2 font-semibold">Delete User</h3>
+          <h3 className="mb-2 font-semibold">Delete Course</h3>
           <hr />
           <p className="mt-2">
-            Are you sure you want to delete the user? All of user's data will be
-            permanently removed.
+            Are you sure you want to delete the course? All of course's data
+            will be permanently removed.
             <br />
             This action cannot be undone.
           </p>
@@ -167,7 +147,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
           </button>
           <button
             className="btn danger"
-            onClick={handleDeleteUser}
+            onClick={handleDeleteCourse}
             disabled={isDeleting}
           >
             {isDeleting ? (
@@ -184,11 +164,11 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
         ) : null}
       </Modal>
 
-      {/* Update User Modal */}
-      {selectedUser ? (
+      {/* Update Course Modal */}
+      {selectedCourse ? (
         <Modal show={updateShow}>
           <div className="flex">
-            <h1 className="font-semibold mb-3">Update User</h1>
+            <h1 className="font-semibold mb-3">Update Course</h1>
             <button
               className="ml-auto focus:outline-none"
               onClick={() => {
@@ -205,57 +185,21 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
             className="flex flex-col gap-5 mt-5"
             onSubmit={handleSubmit(handleUpdateUser)}
           >
-            <div className="flex flex-col gap-5 sm:flex-row">
-              <input
-                type="text"
-                className="input sm:w-1/2"
-                placeholder="First Name"
-                defaultValue={selectedUser.firstName}
-                {...register("firstName")}
-              />
-              <input
-                type="text"
-                className="input sm:w-1/2"
-                placeholder="Last Name"
-                defaultValue={selectedUser.lastName}
-                disabled={isSubmitting}
-                {...register("lastName")}
-              />
-            </div>
             <input
               type="text"
               className="input"
-              placeholder="Username"
-              defaultValue={selectedUser.username}
-              disabled={isSubmitting}
-              {...register("username")}
+              placeholder="Name"
+              defaultValue={selectedCourse.name}
+              {...register("name")}
             />
             <input
-              type="password"
+              type="text"
               className="input"
-              placeholder="Password"
+              placeholder="Description"
+              defaultValue={selectedCourse.description}
               disabled={isSubmitting}
-              {...register("password")}
+              {...register("description")}
             />
-            <select
-              className="input"
-              {...register("role")}
-              disabled={isSubmitting}
-              defaultValue={selectedUser.role}
-            >
-              <option value="user">User</option>
-              <option value="editor">Editor</option>
-              <option value="admin">Admin</option>
-            </select>
-            <div>
-              <label className="font-semibold mr-3">Active</label>
-              <input
-                type="checkbox"
-                className="input w-5 h-5"
-                defaultChecked={selectedUser.isActive}
-                {...register("isActive")}
-              />
-            </div>
             <button className="btn" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader className="animate-spin mx-auto" />

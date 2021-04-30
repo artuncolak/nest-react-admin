@@ -23,7 +23,7 @@ import { CourseService } from './course.service';
 @Controller('courses')
 @ApiBearerAuth()
 @UseGuards(JwtGuard, RolesGuard)
-@ApiTags('courses')
+@ApiTags('Courses')
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 

@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "./context/AuthenticationContext";
 import AuthRoute from "./AuthRoute";
 import Users from "./pages/Users";
+import Courses from "./pages/Courses";
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useContext(
@@ -15,28 +16,33 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const authenticate = async () => {
-    try {
-      const authResponse = await authService.refresh();
-      setAuthenticatedUser(authResponse.user);
-    } catch (error) {
-    } finally {
+    if (!authenticatedUser) {
+      try {
+        const authResponse = await authService.refresh();
+        setAuthenticatedUser(authResponse.user);
+      } catch (error) {
+      } finally {
+        setIsLoaded(true);
+      }
+    } else {
       setIsLoaded(true);
     }
   };
 
   useEffect(() => {
-    if (!authenticatedUser) {
-      authenticate();
-    } else {
-      setIsLoaded(true);
-    }
+    authenticate();
   }, []);
 
   return isLoaded ? (
     <Router>
       <Switch>
         <PrivateRoute exact path="/" component={Home} />
-        <PrivateRoute exact path="/users" component={Users} />
+
+        {authenticatedUser && authenticatedUser.role === "admin" ? (
+          <PrivateRoute exact path="/users" component={Users} />
+        ) : null}
+
+        <PrivateRoute exact path="/courses" component={Courses} />
 
         <AuthRoute exact path="/login" component={Login} />
       </Switch>

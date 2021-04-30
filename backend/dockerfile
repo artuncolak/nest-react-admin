@@ -1,0 +1,27 @@
+FROM node:alpine as build
+
+WORKDIR /app
+
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn
+
+COPY . .
+
+RUN yarn build
+
+FROM node:alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV JWT_SECRET=66556A586E3272357538782F413F4428472B4B6250655367566B597033733676
+ENV JWT_REFRESH_SECRET=357538782F413F4428472B4B6250655368566D59713374367639792442264529
+
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install --production
+
+COPY 

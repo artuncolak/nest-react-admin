@@ -26,6 +26,7 @@ export default function Users() {
     try {
       await userService.save(createUserRequest);
       setAddUserShow(false);
+      reset();
     } catch (error) {
       setError(error.response.data.message);
     }

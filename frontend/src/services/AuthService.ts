@@ -12,6 +12,11 @@ class AuthService {
     return authResponse;
   }
 
+  async logout(): Promise<void> {
+    await axios.post("/api/auth/logout");
+    axios.defaults.headers.Authorization = null;
+  }
+
   async refresh(): Promise<AuthResponse> {
     const authResponse = (await axios.post<AuthResponse>("/api/auth/refresh"))
       .data;

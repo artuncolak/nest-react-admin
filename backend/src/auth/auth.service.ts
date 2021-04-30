@@ -12,7 +12,11 @@ import { UserService } from 'src/user/user.service';
 import { LoginDto, LoginResponseDto } from './auth.dto';
 
 @Injectable()
+
 export class AuthService {
+  private readonly SECRET = process.env.JWT_SECRET;
+  private readonly REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
@@ -26,8 +30,6 @@ export class AuthService {
     const { username, password } = loginDto;
     const user = await this.userService.findByUsername(username);
 
-    console.log(process.env.JWT_SECRET_KEY);
-
     if (
       !user ||
       !(await this.passwordEncoder.isMatch(password, user.password))
@@ -38,16 +40,20 @@ export class AuthService {
       );
     }
 
+    if (!user.isActive) {
+      throw new HttpException('Account is disabled', HttpStatus.UNAUTHORIZED);
+    }
+
     const { id, firstName, lastName, role } = user;
 
     const accessToken = await this.jwtService.signAsync(
       { username, firstName, lastName, role },
-      { subject: id, expiresIn: '15m', secret: process.env.JWT_SECRET_KEY },
+      { subject: id, expiresIn: '15m', secret: this.SECRET },
     );
 
     const refreshToken = await this.jwtService.signAsync(
       { username, firstName, lastName, role },
-      { subject: id, expiresIn: '1y', secret: process.env.JWT_SECRET_KEY },
+      { subject: id, expiresIn: '1y', secret: this.REFRESH_SECRET },
     );
 
     await this.userService.setRefreshToken(id, refreshToken);
@@ -68,8 +74,8 @@ export class AuthService {
       throw new HttpException('Refresh token required', HttpStatus.BAD_REQUEST);
     }
 
-    const decodedAccess = await this.jwtService.decode(refreshToken);
-    const user = await this.userService.findById(decodedAccess['id']);
+    const decoded = await this.jwtService.decode(refreshToken);
+    const user = await this.userService.findById(decoded['sub']);
     const { firstName, lastName, username, id, role } = user;
 
     if (
@@ -80,7 +86,7 @@ export class AuthService {
 
     try {
       await this.jwtService.verifyAsync(refreshToken, {
-        secret: process.env.JWT_SECRET_KEY,
+        secret: this.REFRESH_SECRET,
       });
     } catch (error) {
       await this.userService.setRefreshToken(id, null);
@@ -89,7 +95,7 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(
       { username, firstName, lastName, role },
-      { subject: id, expiresIn: '15m', secret: process.env.JWT_SECRET_KEY },
+      { subject: id, expiresIn: '15m', secret: this.SECRET },
     );
 
     await this.userService.setRefreshToken(id, refreshToken);
