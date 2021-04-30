@@ -28,10 +28,13 @@
     @apply hover:bg-blue-700 transition-all;
     @apply focus:ring disabled:opacity-50;
   }
+  .btn.danger {
+    @apply bg-red-500 hover:bg-red-700;
+  }
   .input {
     @apply rounded-md border-gray-300 transition-colors disabled:opacity-50;
   }
   .card {
-    @apply p-5 rounded-md shadow;
+    @apply p-5 rounded-md bg-white;
   }
 }

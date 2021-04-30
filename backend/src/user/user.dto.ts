@@ -7,7 +7,6 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 
 export class CreateUserDto {
@@ -27,8 +26,8 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 
-  @IsEnum(Roles)
-  role?: Role;
+  @IsEnum(Role)
+  role: Role;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {

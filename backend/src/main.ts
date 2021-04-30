@@ -31,7 +31,7 @@ async function bootstrap() {
       lastName: 'admin',
       isActive: true,
       username: 'admin',
-      role: Role.User,
+      role: Role.Admin,
       password: await bcrypt.hash('551141', 10),
     }).save();
   }
