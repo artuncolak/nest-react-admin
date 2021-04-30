@@ -5,7 +5,11 @@ import { AuthenticationContext } from "../../context/AuthenticationContext";
 import authService from "../../services/AuthService";
 import SidebarItem from "./SidebarItem";
 
-export default function Sidebar() {
+interface SidebarProps {
+  className: string;
+}
+
+export default function Sidebar({ className }: SidebarProps) {
   const history = useHistory();
 
   const { authenticatedUser, setAuthenticatedUser } = useContext(
@@ -19,7 +23,12 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed h-screen w-72 p-5 shadow flex flex-col">
+    <div
+      className={
+        "sidebar " +
+        className
+      }
+    >
       <h1 className="font-semibold text-center">Carna Project</h1>
       <nav className="mt-5 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/courses">

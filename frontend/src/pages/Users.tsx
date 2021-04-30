@@ -6,7 +6,7 @@ import { Loader, Plus, X } from "react-feather";
 import Modal from "../components/shared/Modal";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import CreateUserRequest from "../models/CreateUserRequest";
+import CreateUserRequest from "../models/user/CreateUserRequest";
 
 export default function Users() {
   const { data, isLoading } = useQuery("users", userService.findAll, {
@@ -37,15 +37,13 @@ export default function Users() {
       <h1 className="font-semibold text-3xl mb-5">Manage Users</h1>
       <hr />
       <button
-        className="btn mt-5 flex gap-2"
+        className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
         onClick={() => setAddUserShow(true)}
       >
         <Plus /> Add User
       </button>
 
-      <div className="border rounded-lg mt-5 shadow">
-        <UsersTable data={data} isLoading={isLoading} />
-      </div>
+      <UsersTable data={data} isLoading={isLoading} />
 
       {/* Add User Modal */}
       <Modal show={addUserShow}>

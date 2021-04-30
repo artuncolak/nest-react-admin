@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { AlertTriangle, Loader, X } from "react-feather";
 import { useForm } from "react-hook-form";
-import UpdateUserRequest from "../../models/UpdateUserRequest";
-import User from "../../models/User";
+import UpdateUserRequest from "../../models/user/UpdateUserRequest";
+import User from "../../models/user/User";
 import userService from "../../services/UserService";
 import Modal from "../shared/Modal";
+import Table from "../shared/Table";
+import TableItem from "../shared/TableItem";
 
 interface UsersTableProps {
   data: User[];
@@ -51,95 +53,59 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
 
   return (
     <>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Username
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Status
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Role
-            </th>
-            <th scope="col" className="relative px-6 py-3">
-              <span className="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {isLoading
-            ? null
-            : data.map((user) => {
-                const {
-                  id,
-                  firstName,
-                  lastName,
-                  username,
-                  isActive,
-                  role,
-                } = user;
-                return (
-                  <tr key={id}>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{`${firstName} ${lastName}`}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {username}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {isActive ? (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          Inactive
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {role}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-right font-medium">
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setUpdateShow(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setDeleteShow(true);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-        </tbody>
-      </table>
+      <Table columns={["Name", "Username", "Status", "Role"]}>
+        {isLoading
+          ? null
+          : data.map((user) => {
+              const {
+                id,
+                firstName,
+                lastName,
+                username,
+                isActive,
+                role,
+              } = user;
+              return (
+                <tr key={id}>
+                  <TableItem>{`${firstName} ${lastName}`}</TableItem>
+                  <TableItem>{username}</TableItem>
+                  <TableItem>
+                    {isActive ? (
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        Active
+                      </span>
+                    ) : (
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        Inactive
+                      </span>
+                    )}
+                  </TableItem>
+                  <TableItem>{role}</TableItem>
+                  <TableItem className="text-right">
+                    <button
+                      className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setUpdateShow(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setDeleteShow(true);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </TableItem>
+                </tr>
+              );
+            })}
+      </Table>
+
       {!isLoading && data.length < 1 ? (
         <div className="text-center my-5 text-gray-500">
           <h1>Empty</h1>

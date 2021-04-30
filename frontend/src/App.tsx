@@ -8,6 +8,7 @@ import { AuthenticationContext } from "./context/AuthenticationContext";
 import AuthRoute from "./AuthRoute";
 import Users from "./pages/Users";
 import Courses from "./pages/Courses";
+import Contents from "./pages/Contents";
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useContext(
@@ -21,6 +22,7 @@ export default function App() {
         const authResponse = await authService.refresh();
         setAuthenticatedUser(authResponse.user);
       } catch (error) {
+        console.log(error);
       } finally {
         setIsLoaded(true);
       }
@@ -43,6 +45,7 @@ export default function App() {
         ) : null}
 
         <PrivateRoute exact path="/courses" component={Courses} />
+        <PrivateRoute exact path="/courses/:id" component={Contents} />
 
         <AuthRoute exact path="/login" component={Login} />
       </Switch>

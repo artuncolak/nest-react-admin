@@ -1,25 +1,29 @@
 import { useState, useContext } from "react";
 import { AlertTriangle, Loader, X } from "react-feather";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
-import Course from "../../models/course/Course";
-import UpdateCourseRequest from "../../models/course/UpdateCourseRequest";
-import courseService from "../../services/CourseService";
+import Content from "../../models/content/Content";
+import UpdateContentRequest from "../../models/content/UpdateContentRequest";
+import contentService from "../../services/ContentService";
 import Modal from "../shared/Modal";
 import Table from "../shared/Table";
 import TableItem from "../shared/TableItem";
 
-interface UsersTableProps {
-  data: Course[];
+interface ContentsTableProps {
+  data: Content[];
+  courseId: string;
   isLoading: boolean;
 }
 
-export default function CoursesTable({ data, isLoading }: UsersTableProps) {
+export default function ContentsTable({
+  data,
+  isLoading,
+  courseId,
+}: ContentsTableProps) {
   const { authenticatedUser } = useContext(AuthenticationContext);
   const [deleteShow, seTableItemeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [selectedCourse, setSelectedCourse] = useState<Course>();
+  const [selectedContent, setSelectedContent] = useState<Content>();
   const [error, setError] = useState<string>();
   const [updateShow, setUpdateShow] = useState<boolean>(false);
 
@@ -28,26 +32,32 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<UpdateCourseRequest>();
+  } = useForm<UpdateContentRequest>();
 
-  const handleDeleteCourse = async () => {
+  const handleDeleteContent = async () => {
     try {
       setIsDeleting(true);
-      await courseService.delete(selectedCourse.id);
+      await contentService.delete(courseId, selectedContent.id);
       setIsDeleting(false);
       seTableItemeleteShow(false);
-      setSelectedCourse(null);
+      setSelectedContent(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
     }
   };
 
-  const handleUpdateUser = async (updateCourseRequest: UpdateCourseRequest) => {
+  const handleUpdateContent = async (
+    updateContentRequest: UpdateContentRequest
+  ) => {
     try {
-      await courseService.update(selectedCourse.id, updateCourseRequest);
+      await contentService.update(
+        courseId,
+        selectedContent.id,
+        updateContentRequest
+      );
       setUpdateShow(false);
-      setSelectedCourse(null);
+      setSelectedContent(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
@@ -63,9 +73,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
               const { id, name, description, dateCreated } = course;
               return (
                 <tr key={id}>
-                  <TableItem>
-                    <Link to={`/courses/${id}`}>{name}</Link>
-                  </TableItem>
+                  <TableItem>{name}</TableItem>
                   <TableItem>{description}</TableItem>
                   <TableItem>
                     {new Date(dateCreated).toLocaleDateString()}
@@ -75,7 +83,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                       <button
                         className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
                         onClick={() => {
-                          setSelectedCourse(course);
+                          setSelectedContent(course);
                           setUpdateShow(true);
                         }}
                       >
@@ -86,7 +94,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                       <button
                         className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                         onClick={() => {
-                          setSelectedCourse(course);
+                          setSelectedContent(course);
                           seTableItemeleteShow(true);
                         }}
                       >
@@ -108,10 +116,10 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
       <Modal show={deleteShow}>
         <AlertTriangle size={30} className="text-red-500 mr-5 fixed" />
         <div className="ml-10">
-          <h3 className="mb-2 font-semibold">Delete Course</h3>
+          <h3 className="mb-2 font-semibold">Delete Content</h3>
           <hr />
           <p className="mt-2">
-            Are you sure you want to delete the course? All of course's data
+            Are you sure you want to delete the content? All of content's data
             will be permanently removed.
             <br />
             This action cannot be undone.
@@ -127,7 +135,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
           </button>
           <button
             className="btn danger"
-            onClick={handleDeleteCourse}
+            onClick={handleDeleteContent}
             disabled={isDeleting}
           >
             {isDeleting ? (
@@ -145,10 +153,10 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
       </Modal>
 
       {/* Update Course Modal */}
-      {selectedCourse ? (
+      {selectedContent ? (
         <Modal show={updateShow}>
           <div className="flex">
-            <h1 className="font-semibold mb-3">Update Course</h1>
+            <h1 className="font-semibold mb-3">Update Content</h1>
             <button
               className="ml-auto focus:outline-none"
               onClick={() => {
@@ -163,20 +171,20 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
 
           <form
             className="flex flex-col gap-5 mt-5"
-            onSubmit={handleSubmit(handleUpdateUser)}
+            onSubmit={handleSubmit(handleUpdateContent)}
           >
             <input
               type="text"
               className="input"
               placeholder="Name"
-              defaultValue={selectedCourse.name}
+              defaultValue={selectedContent.name}
               {...register("name")}
             />
             <input
               type="text"
               className="input"
               placeholder="Description"
-              defaultValue={selectedCourse.description}
+              defaultValue={selectedContent.description}
               disabled={isSubmitting}
               {...register("description")}
             />

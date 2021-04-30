@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import authService from "../services/AuthService";
-import LoginRequest from "../models/LoginRequest";
+import LoginRequest from "../models/auth/LoginRequest";
 import { Loader } from "react-feather";
 import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";

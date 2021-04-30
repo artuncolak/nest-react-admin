@@ -1,15 +1,15 @@
-import CreateUserRequest from "../models/CreateUserRequest";
-import UpdateUserRequest from "../models/UpdateUserRequest";
-import User from "../models/User";
-import axios from "./AxiosService";
+import CreateUserRequest from "../models/user/CreateUserRequest";
+import UpdateUserRequest from "../models/user/UpdateUserRequest";
+import User from "../models/user/User";
+import apiService from "./ApiService";
 
 class UserService {
   async save(createUserRequest: CreateUserRequest): Promise<void> {
-    await axios.post("/api/users", createUserRequest);
+    await apiService.post("/api/users", createUserRequest);
   }
 
   async findAll(): Promise<User[]> {
-    return (await axios.get<User[]>("/api/users")).data;
+    return (await apiService.get<User[]>("/api/users")).data;
   }
 
   async update(
@@ -24,7 +24,7 @@ class UserService {
       role,
       username,
     } = updateUserRequest;
-    await axios.put(`/api/users/${id}`, {
+    await apiService.put(`/api/users/${id}`, {
       firstName: firstName || undefined,
       lastName: lastName || undefined,
       username: username || undefined,
@@ -35,7 +35,7 @@ class UserService {
   }
 
   async delete(id: string): Promise<void> {
-    await axios.delete(`/api/users/${id}`);
+    await apiService.delete(`/api/users/${id}`);
   }
 }
 

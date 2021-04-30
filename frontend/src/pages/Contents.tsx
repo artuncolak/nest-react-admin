@@ -2,31 +2,37 @@ import { useState } from "react";
 import { Loader, Plus, X } from "react-feather";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
-import CoursesTable from "../components/courses/CoursesTable";
+import { useParams } from "react-router";
+import ContentsTable from "../components/content/ContentsTable";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";
-import CreateCourseRequest from "../models/course/CreateCourseRequest";
+import CreateContentRequest from "../models/content/CreateContentRequest";
+import contentService from "../services/ContentService";
 import courseService from "../services/CourseService";
 
-export default function Courses() {
-  const { data, isLoading } = useQuery("courses", courseService.findAll, {
-    refetchInterval: 1000,
-  });
-
+export default function Course() {
+  const { id } = useParams<{ id: string }>();
+  const userQuery = useQuery("user", async () => courseService.findOne(id));
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<CreateCourseRequest>();
-
-  const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
+  } = useForm<CreateContentRequest>();
+  const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const { data, isLoading } = useQuery(
+    "contents",
+    async () => contentService.findAll(id),
+    {
+      refetchInterval: 1000,
+    }
+  );
 
-  const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
+  const saveCourse = async (createContentRequest: CreateContentRequest) => {
     try {
-      await courseService.save(createCourseRequest);
-      setAddCourseShow(false);
+      await contentService.save(id, createContentRequest);
+      setAddContentShow(false);
       reset();
       setError(null);
     } catch (error) {
@@ -36,26 +42,30 @@ export default function Courses() {
 
   return (
     <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Manage Courses</h1>
+      <h1 className="font-semibold text-3xl mb-5">
+        {!userQuery.isLoading ? `${userQuery.data.name} Contents` : ""}
+      </h1>
       <hr />
       <button
         className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
-        onClick={() => setAddCourseShow(true)}
+        onClick={() => setAddContentShow(true)}
       >
-        <Plus /> Add Course
+        <Plus /> Add Content
       </button>
 
-      <CoursesTable data={data} isLoading={isLoading} />
+      <div className="table-container">
+        <ContentsTable data={data} isLoading={isLoading} courseId={id} />
+      </div>
 
       {/* Add User Modal */}
-      <Modal show={addCourseShow}>
+      <Modal show={addContentShow}>
         <div className="flex">
-          <h1 className="font-semibold mb-3">Add Course</h1>
+          <h1 className="font-semibold mb-3">Add Content</h1>
           <button
             className="ml-auto focus:outline-none"
             onClick={() => {
               reset();
-              setAddCourseShow(false);
+              setAddContentShow(false);
             }}
           >
             <X size={30} />

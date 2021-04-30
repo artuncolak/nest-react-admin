@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useState } from "react";
-import User from "../models/User";
+import User from "../models/user/User";
 
 interface AuthContextValue {
   authenticatedUser: User;

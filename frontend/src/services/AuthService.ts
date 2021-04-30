@@ -1,26 +1,26 @@
-import axios from "./AxiosService";
+import apiService from "./ApiService";
 
-import AuthResponse from "../models/AuthResponse";
-import LoginRequest from "../models/LoginRequest";
+import AuthResponse from "../models/auth/AuthResponse";
+import LoginRequest from "../models/auth/LoginRequest";
 
 class AuthService {
   async login(loginRequest: LoginRequest): Promise<AuthResponse> {
     const authResponse = (
-      await axios.post<AuthResponse>("/api/auth/login", loginRequest)
+      await apiService.post<AuthResponse>("/api/auth/login", loginRequest)
     ).data;
-    axios.defaults.headers.Authorization = `Bearer ${authResponse.token}`;
+    apiService.defaults.headers.Authorization = `Bearer ${authResponse.token}`;
     return authResponse;
   }
 
   async logout(): Promise<void> {
-    await axios.post("/api/auth/logout");
-    axios.defaults.headers.Authorization = null;
+    await apiService.post("/api/auth/logout");
+    apiService.defaults.headers.Authorization = null;
   }
 
   async refresh(): Promise<AuthResponse> {
-    const authResponse = (await axios.post<AuthResponse>("/api/auth/refresh"))
+    const authResponse = (await apiService.post<AuthResponse>("/api/auth/refresh"))
       .data;
-    axios.defaults.headers.Authorization = `Bearer ${authResponse.token}`;
+    apiService.defaults.headers.Authorization = `Bearer ${authResponse.token}`;
     return authResponse;
   }
 }

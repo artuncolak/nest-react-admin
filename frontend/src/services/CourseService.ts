@@ -1,26 +1,30 @@
-import Course from "../models/Course";
-import CreateCourseRequest from "../models/CreateCourseRequest";
-import UpdateCourseRequest from "../models/UpdateCourseRequest";
-import axios from "./AxiosService";
+import Course from "../models/course/Course";
+import CreateCourseRequest from "../models/course/CreateCourseRequest";
+import UpdateCourseRequest from "../models/course/UpdateCourseRequest";
+import apiService from "./ApiService";
 
 class UserService {
   async save(createCourseRequest: CreateCourseRequest): Promise<void> {
-    await axios.post("/api/courses", createCourseRequest);
+    await apiService.post("/api/courses", createCourseRequest);
   }
 
   async findAll(): Promise<Course[]> {
-    return (await axios.get<Course[]>("/api/courses")).data;
+    return (await apiService.get<Course[]>("/api/courses")).data;
+  }
+
+  async findOne(id: string): Promise<Course> {
+    return (await apiService.get<Course>(`/api/courses/${id}`)).data;
   }
 
   async update(
     id: string,
     updateCourseRequest: UpdateCourseRequest
   ): Promise<void> {
-    await axios.put(`/api/courses/${id}`, updateCourseRequest);
+    await apiService.put(`/api/courses/${id}`, updateCourseRequest);
   }
 
   async delete(id: string): Promise<void> {
-    await axios.delete(`/api/courses/${id}`);
+    await apiService.delete(`/api/courses/${id}`);
   }
 }
 

@@ -66,6 +66,7 @@ export class CourseController {
   }
 
   @Post('/:id/contents')
+  @Roles(Role.Admin, Role.Editor)
   async saveContent(
     @Param('id') id: string,
     @Body() createContentDto: CreateContentDto,
@@ -74,11 +75,12 @@ export class CourseController {
   }
 
   @Get('/:id/contents')
-  async findAllContentsByUserId(@Param('id') id: string): Promise<Content[]> {
+  async findAllContentsByCourseId(@Param('id') id: string): Promise<Content[]> {
     return await this.contentService.findAllByCourseId(id);
   }
 
   @Put('/:id/contents/:contentId')
+  @Roles(Role.Admin, Role.Editor)
   async updateContent(
     @Param('id') id: string,
     @Param('contentId') contentId: string,
@@ -89,6 +91,7 @@ export class CourseController {
 
   @Delete('/:id/contents/:contentId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Roles(Role.Admin)
   async deleteContent(
     @Param('id') id: string,
     @Param('contentId') contentId: string,
