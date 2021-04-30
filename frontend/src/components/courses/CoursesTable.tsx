@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AlertTriangle, Loader, X } from "react-feather";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { AuthenticationContext } from "../../context/AuthenticationContext";
 import Course from "../../models/Course";
 import UpdateCourseRequest from "../../models/UpdateCourseRequest";
 import courseService from "../../services/CourseService";
@@ -12,6 +14,7 @@ interface UsersTableProps {
 }
 
 export default function CoursesTable({ data, isLoading }: UsersTableProps) {
+  const { authenticatedUser } = useContext(AuthenticationContext);
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selectedCourse, setSelectedCourse] = useState<Course>();
@@ -85,7 +88,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                 return (
                   <tr key={id}>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {name}
+                      <Link to={`/courses/${id}`}>{name}</Link>
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
                       {description}
@@ -94,24 +97,28 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                       {new Date(dateCreated).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-sm text-right font-medium">
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourse(course);
-                          setUpdateShow(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                        onClick={() => {
-                          setSelectedCourse(course);
-                          setDeleteShow(true);
-                        }}
-                      >
-                        Delete
-                      </button>
+                      {["admin", "editor"].includes(authenticatedUser.role) ? (
+                        <button
+                          className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                          onClick={() => {
+                            setSelectedCourse(course);
+                            setUpdateShow(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      ) : null}
+                      {authenticatedUser.role === "admin" ? (
+                        <button
+                          className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                          onClick={() => {
+                            setSelectedCourse(course);
+                            setDeleteShow(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      ) : null}
                     </td>
                   </tr>
                 );

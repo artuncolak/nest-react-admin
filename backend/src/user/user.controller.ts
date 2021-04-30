@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -9,6 +10,7 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -24,6 +26,7 @@ import { UserService } from './user.service';
 @ApiTags('Users')
 @ApiBearerAuth()
 @UseGuards(JwtGuard, RolesGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Roles(Role.Admin)
 export class UserController {
   constructor(private readonly userService: UserService) {}

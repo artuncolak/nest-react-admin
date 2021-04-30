@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
+import { ContentModule } from './content/content.module';
 import { CourseModule } from './course/course.module';
 import { UserModule } from './user/user.module';
 
@@ -22,6 +23,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     AuthModule,
     CourseModule,
+    ContentModule,
   ],
   controllers: [],
   providers: [],

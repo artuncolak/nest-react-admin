@@ -12,7 +12,6 @@ import { UserService } from 'src/user/user.service';
 import { LoginDto, LoginResponseDto } from './auth.dto';
 
 @Injectable()
-
 export class AuthService {
   private readonly SECRET = process.env.JWT_SECRET;
   private readonly REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
