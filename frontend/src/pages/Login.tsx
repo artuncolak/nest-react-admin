@@ -1,10 +1,11 @@
-import { useForm } from "react-hook-form";
-import authService from "../services/AuthService";
-import LoginRequest from "../models/auth/LoginRequest";
-import { Loader } from "react-feather";
 import { useState } from "react";
+import { Loader } from "react-feather";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+
 import useAuth from "../hooks/useAuth";
+import LoginRequest from "../models/auth/LoginRequest";
+import authService from "../services/AuthService";
 
 export default function Login() {
   const {

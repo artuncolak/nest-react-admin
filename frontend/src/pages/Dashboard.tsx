@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+
 import UpdateProfile from "../components/dashboard/UpdateProfile";
 import Layout from "../components/layout";
 import statsService from "../services/StatsService";

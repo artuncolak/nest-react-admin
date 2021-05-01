@@ -33,7 +33,14 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "plugins": [
+      "simple-import-sort"
+    ],
+    "rules": {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error"
+    }
   },
   "browserslist": {
     "production": [
@@ -51,6 +58,7 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
     "autoprefixer": "^9",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }

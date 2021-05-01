@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Loader, Plus, X } from "react-feather";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
+
 import CoursesTable from "../components/courses/CoursesTable";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";
@@ -10,7 +11,7 @@ import CreateCourseRequest from "../models/course/CreateCourseRequest";
 import courseService from "../services/CourseService";
 
 export default function Courses() {
-  const { authenticatedUser, setAuthenticatedUser } = useAuth();
+  const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery("courses", courseService.findAll, {
     refetchInterval: 1000,
   });

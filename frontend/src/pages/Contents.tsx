@@ -3,6 +3,7 @@ import { Loader, Plus, X } from "react-feather";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
+
 import ContentsTable from "../components/content/ContentsTable";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";

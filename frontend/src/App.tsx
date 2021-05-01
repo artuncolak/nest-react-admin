@@ -1,13 +1,14 @@
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+
+import { AuthenticationContext } from "./context/AuthenticationContext";
+import Contents from "./pages/Contents";
+import Courses from "./pages/Courses";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
-import authService from "./services/AuthService";
-import { useContext, useEffect, useState } from "react";
-import { AuthenticationContext } from "./context/AuthenticationContext";
 import Users from "./pages/Users";
-import Courses from "./pages/Courses";
-import Contents from "./pages/Contents";
 import { AuthRoute, PrivateRoute } from "./Route";
+import authService from "./services/AuthService";
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useContext(

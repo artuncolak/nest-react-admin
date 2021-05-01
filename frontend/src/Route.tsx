@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Redirect, Route, RouteProps } from "react-router";
+
 import { AuthenticationContext } from "./context/AuthenticationContext";
 
 export { Route } from "react-router";

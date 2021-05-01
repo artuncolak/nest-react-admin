@@ -1,10 +1,12 @@
+import "./styles/index.css";
+
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { AuthenticationProvider } from "./context/AuthenticationContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+import App from "./App";
+import { AuthenticationProvider } from "./context/AuthenticationContext";
+import reportWebVitals from "./reportWebVitals";
 
 const queryClient = new QueryClient();
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "react-feather";
+
 import Sidebar from "./Sidebar";
 
 export default function Layout({ children }) {

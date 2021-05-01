@@ -1,12 +1,13 @@
-import { useQuery } from "react-query";
-import userService from "../services/UserService";
-import Layout from "../components/layout";
-import UsersTable from "../components/users/UsersTable";
-import { Loader, Plus, X } from "react-feather";
-import Modal from "../components/shared/Modal";
 import { useState } from "react";
+import { Loader, Plus, X } from "react-feather";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
+
+import Layout from "../components/layout";
+import Modal from "../components/shared/Modal";
+import UsersTable from "../components/users/UsersTable";
 import CreateUserRequest from "../models/user/CreateUserRequest";
+import userService from "../services/UserService";
 
 export default function Users() {
   const { data, isLoading } = useQuery("users", userService.findAll, {

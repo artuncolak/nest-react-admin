@@ -1,7 +1,6 @@
-import apiService from "./ApiService";
-
 import AuthResponse from "../models/auth/AuthResponse";
 import LoginRequest from "../models/auth/LoginRequest";
+import apiService from "./ApiService";
 
 class AuthService {
   async login(loginRequest: LoginRequest): Promise<AuthResponse> {
