@@ -5,8 +5,11 @@ import { Course } from './course.entity';
 
 @Injectable()
 export class CourseService {
-  async save(createCourseDto: CreateCourseDto): Promise<void> {
-    await Course.create({ ...createCourseDto, dateCreated: new Date() }).save();
+  async save(createCourseDto: CreateCourseDto): Promise<Course> {
+    return await Course.create({
+      ...createCourseDto,
+      dateCreated: new Date(),
+    }).save();
   }
 
   async findAll(): Promise<Course[]> {
@@ -24,14 +27,15 @@ export class CourseService {
     return course;
   }
 
-  async update(id: string, updateCourseDto: UpdateCourseDto): Promise<void> {
+  async update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
     const course = await this.findById(id);
-    await Course.update(course, updateCourseDto);
+    return await Course.create({ id: course.id, ...updateCourseDto });
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<string> {
     const course = await this.findById(id);
     await Course.delete(course);
+    return id;
   }
 
   async count(): Promise<number> {

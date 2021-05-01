@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ContentService } from 'src/content/content.service';
-import { CourseService } from 'src/course/course.service';
-import { UserService } from 'src/user/user.service';
 
+import { ContentService } from '../content/content.service';
+import { CourseService } from '../course/course.service';
+import { UserService } from '../user/user.service';
 import { StatsResponseDto } from './stats.dto';
 
 @Injectable()

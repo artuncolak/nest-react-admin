@@ -1,4 +1,3 @@
-import { Content } from 'src/content/content.entity';
 import {
   BaseEntity,
   Column,
@@ -6,6 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { Content } from '../content/content.entity';
 
 @Entity()
 export class Course extends BaseEntity {

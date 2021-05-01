@@ -1,4 +1,3 @@
-import { Course } from 'src/course/course.entity';
 import {
   BaseEntity,
   Column,
@@ -7,6 +6,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { Course } from '../course/course.entity';
 
 @Entity()
 export class Content extends BaseEntity {

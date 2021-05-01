@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { PasswordEncoder } from 'src/shared/password-encoder/password.encoder';
-import { UserService } from 'src/user/user.service';
 
+import { UserService } from '../user/user.service';
 import { LoginDto, LoginResponseDto } from './auth.dto';
 
 @Injectable()
@@ -19,7 +19,6 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly passwordEncoder: PasswordEncoder,
   ) {}
 
   async login(
@@ -29,10 +28,7 @@ export class AuthService {
     const { username, password } = loginDto;
     const user = await this.userService.findByUsername(username);
 
-    if (
-      !user ||
-      !(await this.passwordEncoder.isMatch(password, user.password))
-    ) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException(
         'Invalid username or password',
         HttpStatus.UNAUTHORIZED,
@@ -62,10 +58,11 @@ export class AuthService {
     return { token: accessToken, user };
   }
 
-  async logout(request: Request, response: Response): Promise<void> {
+  async logout(request: Request, response: Response): Promise<boolean> {
     const userId = request.user['userId'];
     await this.userService.setRefreshToken(userId, null);
     response.clearCookie('refresh-token');
+    return true;
   }
 
   async refresh(refreshToken: string): Promise<LoginResponseDto> {
@@ -77,9 +74,7 @@ export class AuthService {
     const user = await this.userService.findById(decoded['sub']);
     const { firstName, lastName, username, id, role } = user;
 
-    if (
-      !(await this.passwordEncoder.isMatch(refreshToken, user.refreshToken))
-    ) {
+    if (!(await bcrypt.compare(refreshToken, user.refreshToken))) {
       throw new UnauthorizedException('Refresh token is not valid');
     }
 

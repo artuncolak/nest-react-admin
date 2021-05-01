@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { Role } from 'src/enums/role.enum';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Role } from '../enums/role.enum';
 
 @Entity()
 export class User extends BaseEntity {

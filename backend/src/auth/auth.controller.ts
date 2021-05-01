@@ -34,8 +34,8 @@ export class AuthController {
   async logout(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<void> {
-    await this.authService.logout(request, response);
+  ): Promise<boolean> {
+    return await this.authService.logout(request, response);
   }
 
   @Post('refresh')

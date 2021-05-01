@@ -13,12 +13,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UserGuard } from 'src/auth/guards/user.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
 
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserGuard } from '../auth/guards/user.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -34,8 +34,8 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Roles(Role.Admin)
-  async save(@Body() createUserDto: CreateUserDto): Promise<void> {
-    await this.userService.save(createUserDto);
+  async save(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.userService.save(createUserDto);
   }
 
   @Get()
@@ -54,14 +54,14 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<void> {
+  ): Promise<User> {
     return await this.userService.update(id, updateUserDto);
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles(Role.Admin)
-  async delete(@Param('id') id: string): Promise<void> {
-    await this.userService.delete(id);
+  async delete(@Param('id') id: string): Promise<string> {
+    return await this.userService.delete(id);
   }
 }

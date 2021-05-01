@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { CourseModule } from 'src/course/course.module';
 
+import { CourseModule } from '../course/course.module';
 import { ContentService } from './content.service';
 
 @Module({

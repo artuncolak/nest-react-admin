@@ -1,15 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Role } from 'src/enums/role.enum';
-import { PasswordEncoder } from 'src/shared/password-encoder/password.encoder';
+import * as bcrypt from 'bcrypt';
 
+import { Role } from '../enums/role.enum';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly passwordEncoder: PasswordEncoder) {}
-
-  async save(createUserDto: CreateUserDto): Promise<void> {
+  async save(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findByUsername(createUserDto.username);
 
     if (user) {
@@ -20,8 +18,8 @@ export class UserService {
     }
 
     const { password } = createUserDto;
-    createUserDto.password = await this.passwordEncoder.encode(password);
-    User.create(createUserDto).save();
+    createUserDto.password = await bcrypt.hash(password, 10);
+    return User.create(createUserDto).save();
   }
 
   async findAll(): Promise<User[]> {
@@ -45,11 +43,11 @@ export class UserService {
     return User.findOne({ where: { username } });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const { password, username } = updateUserDto;
 
     if (password) {
-      updateUserDto.password = await this.passwordEncoder.encode(password);
+      updateUserDto.password = await bcrypt.hash(password, 10);
     }
 
     if (username) {
@@ -61,11 +59,12 @@ export class UserService {
       }
     }
 
-    User.update(id, { ...updateUserDto });
+    return User.create({ id, ...updateUserDto }).save();
   }
 
-  async delete(id: string): Promise<void> {
-    User.delete(await this.findById(id));
+  async delete(id: string): Promise<string> {
+    await User.delete(await this.findById(id));
+    return id;
   }
 
   async count(): Promise<number> {
@@ -75,9 +74,7 @@ export class UserService {
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     const user = await this.findById(id);
     await User.update(user, {
-      refreshToken: refreshToken
-        ? await this.passwordEncoder.encode(refreshToken)
-        : null,
+      refreshToken: refreshToken ? await bcrypt.hash(refreshToken, 10) : null,
     });
   }
 }

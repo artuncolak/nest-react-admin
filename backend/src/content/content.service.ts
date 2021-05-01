@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CourseService } from 'src/course/course.service';
 
+import { CourseService } from '../course/course.service';
 import { CreateContentDto, UpdateContentDto } from './content.dto';
 import { Content } from './content.entity';
 
@@ -11,10 +11,10 @@ export class ContentService {
   async save(
     courseId: string,
     createContentDto: CreateContentDto,
-  ): Promise<void> {
+  ): Promise<Content> {
     const { name, description } = createContentDto;
     const course = await this.courseService.findById(courseId);
-    await Content.create({
+    return await Content.create({
       name,
       description,
       course,
@@ -58,14 +58,15 @@ export class ContentService {
     courseId: string,
     id: string,
     updateContentDto: UpdateContentDto,
-  ): Promise<void> {
+  ): Promise<Content> {
     const content = await this.findByCourseIdAndId(courseId, id);
-    await Content.update(content, updateContentDto);
+    return await Content.create({ id: content.id, ...updateContentDto }).save();
   }
 
-  async delete(courseId: string, id: string): Promise<void> {
+  async delete(courseId: string, id: string): Promise<string> {
     const content = await this.findByCourseIdAndId(courseId, id);
     await Content.delete(content);
+    return id;
   }
 
   async count(): Promise<number> {

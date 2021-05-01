@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ContentModule } from 'src/content/content.module';
-import { CourseModule } from 'src/course/course.module';
-import { UserModule } from 'src/user/user.module';
 
+import { ContentModule } from '../content/content.module';
+import { CourseModule } from '../course/course.module';
+import { UserModule } from '../user/user.module';
 import { StatsController } from './stats.controller';
 import { StatsService } from './stats.service';
 
