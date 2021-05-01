@@ -1,7 +1,9 @@
-import { INestApplication } from '@nestjs/common';
+import { ExecutionContext, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
+import { JwtGuard } from '../src/auth/guards/jwt.guard';
+import { RolesGuard } from '../src/auth/guards/roles.guard';
 import { AppModule } from './../src/app.module';
 
 describe('Users (e2e)', () => {
@@ -10,7 +12,20 @@ describe('Users (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideGuard(JwtGuard)
+      .useValue({
+        canActivate: (context: ExecutionContext) => {
+          return true;
+        },
+      })
+      .overrideGuard(RolesGuard)
+      .useValue({
+        canActivate: (context: ExecutionContext) => {
+          return true;
+        },
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
