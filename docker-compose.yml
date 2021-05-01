@@ -22,5 +22,13 @@ services:
       DATABASE_NAME: "carna-database"
       JWT_SECRET: 4125442A472D4B6150645367556B58703273357638792F423F4528482B4D6251
       JWT_REFRESH_SECRET: 576E5A7134743777217A25432A462D4A614E645267556B58703273357538782F
+
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
     ports:
-      - "8080:5000"
+      - "3000:80"
+    depends_on:
+      - backend
