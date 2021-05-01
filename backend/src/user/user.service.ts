@@ -46,19 +46,19 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<void> {
-    const { password, oldPassword } = updateUserDto;
-
-    const user = await this.findById(id);
+    const { password, username } = updateUserDto;
 
     if (password) {
-      if (!(await this.passwordEncoder.isMatch(oldPassword, user.password))) {
+      updateUserDto.password = await this.passwordEncoder.encode(password);
+    }
+
+    if (username) {
+      if (await this.findByUsername(username)) {
         throw new HttpException(
-          'Old password is incorrect',
+          `User with username ${username} is already exists`,
           HttpStatus.BAD_REQUEST,
         );
       }
-      updateUserDto.password = await this.passwordEncoder.encode(password);
-      delete updateUserDto.oldPassword;
     }
 
     User.update(id, { ...updateUserDto });
@@ -66,6 +66,10 @@ export class UserService {
 
   async delete(id: string): Promise<void> {
     User.delete(await this.findById(id));
+  }
+
+  async count(): Promise<number> {
+    return await User.count();
   }
 
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {

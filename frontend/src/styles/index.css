@@ -41,7 +41,7 @@
     @apply border rounded-lg mt-5 shadow overflow-x-auto;
   }
   .sidebar {
-    @apply fixed h-screen w-72 p-5 shadow flex flex-col transform -translate-x-72 bg-white lg:translate-x-0 transition-transform;
+    @apply fixed h-full w-72 p-5 shadow flex flex-col transform -translate-x-72 bg-white lg:translate-x-0 transition-transform;
   }
   .sidebar.show {
     @apply translate-x-0 !important;

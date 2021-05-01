@@ -6,12 +6,14 @@ import { useParams } from "react-router";
 import ContentsTable from "../components/content/ContentsTable";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";
+import useAuth from "../hooks/useAuth";
 import CreateContentRequest from "../models/content/CreateContentRequest";
 import contentService from "../services/ContentService";
 import courseService from "../services/CourseService";
 
 export default function Course() {
   const { id } = useParams<{ id: string }>();
+  const { authenticatedUser } = useAuth();
   const userQuery = useQuery("user", async () => courseService.findOne(id));
   const {
     register,
@@ -22,7 +24,7 @@ export default function Course() {
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
   const { data, isLoading } = useQuery(
-    "contents",
+    `contents-${id}`,
     async () => contentService.findAll(id),
     {
       refetchInterval: 1000,
@@ -46,16 +48,16 @@ export default function Course() {
         {!userQuery.isLoading ? `${userQuery.data.name} Contents` : ""}
       </h1>
       <hr />
-      <button
-        className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
-        onClick={() => setAddContentShow(true)}
-      >
-        <Plus /> Add Content
-      </button>
+      {authenticatedUser.role !== "user" ? (
+        <button
+          className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
+          onClick={() => setAddContentShow(true)}
+        >
+          <Plus /> Add Content
+        </button>
+      ) : null}
 
-      <div className="table-container">
-        <ContentsTable data={data} isLoading={isLoading} courseId={id} />
-      </div>
+      <ContentsTable data={data} isLoading={isLoading} courseId={id} />
 
       {/* Add User Modal */}
       <Modal show={addContentShow}>

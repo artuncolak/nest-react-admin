@@ -42,10 +42,14 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
 
   const handleUpdateUser = async (updateUserRequest: UpdateUserRequest) => {
     try {
+      if (updateUserRequest.username === selectedUser.username) {
+        delete updateUserRequest.username;
+      }
       await userService.update(selectedUser.id, updateUserRequest);
       setUpdateShow(false);
       setSelectedUser(null);
       setError(null);
+      reset();
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -53,64 +57,68 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
 
   return (
     <>
-      <Table columns={["Name", "Username", "Status", "Role"]}>
-        {isLoading
-          ? null
-          : data.map((user) => {
-              const {
-                id,
-                firstName,
-                lastName,
-                username,
-                isActive,
-                role,
-              } = user;
-              return (
-                <tr key={id}>
-                  <TableItem>{`${firstName} ${lastName}`}</TableItem>
-                  <TableItem>{username}</TableItem>
-                  <TableItem>
-                    {isActive ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                        Inactive
-                      </span>
-                    )}
-                  </TableItem>
-                  <TableItem>{role}</TableItem>
-                  <TableItem className="text-right">
-                    <button
-                      className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setUpdateShow(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setDeleteShow(true);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </TableItem>
-                </tr>
-              );
-            })}
-      </Table>
+      <div className="table-container">
+        <Table columns={["Name", "Username", "Status", "Role"]}>
+          {isLoading
+            ? null
+            : data.map((user) => {
+                const {
+                  id,
+                  firstName,
+                  lastName,
+                  username,
+                  isActive,
+                  role,
+                } = user;
+                return (
+                  <tr key={id}>
+                    <TableItem>{`${firstName} ${lastName}`}</TableItem>
+                    <TableItem>{username}</TableItem>
+                    <TableItem>
+                      {isActive ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          Active
+                        </span>
+                      ) : (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                          Inactive
+                        </span>
+                      )}
+                    </TableItem>
+                    <TableItem>{role}</TableItem>
+                    <TableItem className="text-right">
+                      <button
+                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setUpdateShow(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setDeleteShow(true);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </TableItem>
+                  </tr>
+                );
+              })}
+        </Table>
 
-      {!isLoading && data.length < 1 ? (
-        <div className="text-center my-5 text-gray-500">
-          <h1>Empty</h1>
-        </div>
-      ) : null}
+        {!isLoading && data.length < 1 ? (
+          <div className="text-center my-5 text-gray-500">
+            <h1>Empty</h1>
+          </div>
+        ) : null}
+      </div>
+
+      {/* Delete User Modal */}
       <Modal show={deleteShow}>
         <AlertTriangle size={30} className="text-red-500 mr-5 fixed" />
         <div className="ml-10">

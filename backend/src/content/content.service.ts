@@ -67,4 +67,8 @@ export class ContentService {
     const content = await this.findByCourseIdAndId(courseId, id);
     await Content.delete(content);
   }
+
+  async count(): Promise<number> {
+    return await Content.count();
+  }
 }

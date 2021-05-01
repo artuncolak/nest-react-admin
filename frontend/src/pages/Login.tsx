@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import authService from "../services/AuthService";
 import LoginRequest from "../models/auth/LoginRequest";
 import { Loader } from "react-feather";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { AuthenticationContext } from "../context/AuthenticationContext";
+import useAuth from "../hooks/useAuth";
 
 export default function Login() {
   const {
@@ -14,7 +14,7 @@ export default function Login() {
   } = useForm<LoginRequest>();
   const history = useHistory();
   const [error, setError] = useState<string>();
-  const { setAuthenticatedUser } = useContext(AuthenticationContext);
+  const { setAuthenticatedUser } = useAuth();
 
   const onSubmit = async (loginRequest: LoginRequest) => {
     try {

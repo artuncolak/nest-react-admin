@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import authService from "./services/AuthService";
-import PrivateRoute from "./PrivateRoute";
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "./context/AuthenticationContext";
-import AuthRoute from "./AuthRoute";
 import Users from "./pages/Users";
 import Courses from "./pages/Courses";
 import Contents from "./pages/Contents";
+import { AuthRoute, PrivateRoute } from "./Route";
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useContext(
@@ -38,12 +37,8 @@ export default function App() {
   return isLoaded ? (
     <Router>
       <Switch>
-        <PrivateRoute exact path="/" component={Home} />
-
-        {authenticatedUser && authenticatedUser.role === "admin" ? (
-          <PrivateRoute exact path="/users" component={Users} />
-        ) : null}
-
+        <PrivateRoute exact path="/" component={Dashboard} />
+        <PrivateRoute exact path="/users" component={Users} roles={["admin"]} />
         <PrivateRoute exact path="/courses" component={Courses} />
         <PrivateRoute exact path="/courses/:id" component={Contents} />
 

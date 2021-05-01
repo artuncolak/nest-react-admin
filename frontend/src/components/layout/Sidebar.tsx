@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { BookOpen, LogOut, Users } from "react-feather";
+import { BookOpen, Home, LogOut, Users } from "react-feather";
 import { useHistory } from "react-router";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import authService from "../../services/AuthService";
 import SidebarItem from "./SidebarItem";
 
@@ -12,9 +12,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const history = useHistory();
 
-  const { authenticatedUser, setAuthenticatedUser } = useContext(
-    AuthenticationContext
-  );
+  const { authenticatedUser, setAuthenticatedUser } = useAuth();
 
   const handleLogout = async () => {
     await authService.logout();
@@ -23,14 +21,14 @@ export default function Sidebar({ className }: SidebarProps) {
   };
 
   return (
-    <div
-      className={
-        "sidebar " +
-        className
-      }
-    >
-      <h1 className="font-semibold text-center">Carna Project</h1>
+    <div className={"sidebar " + className}>
+      <Link to="/" className="no-underline text-black">
+        <h1 className="font-semibold text-center">Carna Project</h1>
+      </Link>
       <nav className="mt-5 flex flex-col gap-3 flex-grow">
+        <SidebarItem to="/">
+          <Home /> Dashboard
+        </SidebarItem>
         <SidebarItem to="/courses">
           <BookOpen /> Courses
         </SidebarItem>

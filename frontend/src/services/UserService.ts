@@ -12,6 +12,10 @@ class UserService {
     return (await apiService.get<User[]>("/api/users")).data;
   }
 
+  async findOne(id: string): Promise<User> {
+    return (await apiService.get<User>(`/api/users/${id}`)).data;
+  }
+
   async update(
     id: string,
     updateUserRequest: UpdateUserRequest

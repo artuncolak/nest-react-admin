@@ -33,4 +33,8 @@ export class CourseService {
     const course = await this.findById(id);
     await Course.delete(course);
   }
+
+  async count(): Promise<number> {
+    return await Course.count();
+  }
 }

@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { AlertTriangle, Loader, X } from "react-feather";
 import { useForm } from "react-hook-form";
-import { AuthenticationContext } from "../../context/AuthenticationContext";
+import useAuth from "../../hooks/useAuth";
 import Content from "../../models/content/Content";
 import UpdateContentRequest from "../../models/content/UpdateContentRequest";
 import contentService from "../../services/ContentService";
@@ -20,7 +20,7 @@ export default function ContentsTable({
   isLoading,
   courseId,
 }: ContentsTableProps) {
-  const { authenticatedUser } = useContext(AuthenticationContext);
+  const { authenticatedUser } = useAuth();
   const [deleteShow, seTableItemeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selectedContent, setSelectedContent] = useState<Content>();
@@ -66,53 +66,55 @@ export default function ContentsTable({
 
   return (
     <>
-      <Table columns={["Name", "Description", "Created"]}>
-        {isLoading
-          ? null
-          : data.map((course) => {
-              const { id, name, description, dateCreated } = course;
-              return (
-                <tr key={id}>
-                  <TableItem>{name}</TableItem>
-                  <TableItem>{description}</TableItem>
-                  <TableItem>
-                    {new Date(dateCreated).toLocaleDateString()}
-                  </TableItem>
-                  <TableItem className="text-right">
-                    {["admin", "editor"].includes(authenticatedUser.role) ? (
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                        onClick={() => {
-                          setSelectedContent(course);
-                          setUpdateShow(true);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    ) : null}
-                    {authenticatedUser.role === "admin" ? (
-                      <button
-                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                        onClick={() => {
-                          setSelectedContent(course);
-                          seTableItemeleteShow(true);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    ) : null}
-                  </TableItem>
-                </tr>
-              );
-            })}
-      </Table>
-      {!isLoading && data.length < 1 ? (
-        <div className="text-center my-5 text-gray-500">
-          <h1>Empty</h1>
-        </div>
-      ) : null}
+      <div className="table-container">
+        <Table columns={["Name", "Description", "Created"]}>
+          {isLoading
+            ? null
+            : data.map((course) => {
+                const { id, name, description, dateCreated } = course;
+                return (
+                  <tr key={id}>
+                    <TableItem>{name}</TableItem>
+                    <TableItem>{description}</TableItem>
+                    <TableItem>
+                      {new Date(dateCreated).toLocaleDateString()}
+                    </TableItem>
+                    <TableItem className="text-right">
+                      {["admin", "editor"].includes(authenticatedUser.role) ? (
+                        <button
+                          className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                          onClick={() => {
+                            setSelectedContent(course);
+                            setUpdateShow(true);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      ) : null}
+                      {authenticatedUser.role === "admin" ? (
+                        <button
+                          className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                          onClick={() => {
+                            setSelectedContent(course);
+                            seTableItemeleteShow(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      ) : null}
+                    </TableItem>
+                  </tr>
+                );
+              })}
+        </Table>
+        {!isLoading && data.length < 1 ? (
+          <div className="text-center my-5 text-gray-500">
+            <h1>Empty</h1>
+          </div>
+        ) : null}
+      </div>
 
-      {/* Delete Course Modal */}
+      {/* Delete Content Modal */}
       <Modal show={deleteShow}>
         <AlertTriangle size={30} className="text-red-500 mr-5 fixed" />
         <div className="ml-10">
@@ -152,7 +154,7 @@ export default function ContentsTable({
         ) : null}
       </Modal>
 
-      {/* Update Course Modal */}
+      {/* Update Content Modal */}
       {selectedContent ? (
         <Modal show={updateShow}>
           <div className="flex">

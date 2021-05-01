@@ -5,10 +5,12 @@ import { useQuery } from "react-query";
 import CoursesTable from "../components/courses/CoursesTable";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";
+import useAuth from "../hooks/useAuth";
 import CreateCourseRequest from "../models/course/CreateCourseRequest";
 import courseService from "../services/CourseService";
 
 export default function Courses() {
+  const { authenticatedUser, setAuthenticatedUser } = useAuth();
   const { data, isLoading } = useQuery("courses", courseService.findAll, {
     refetchInterval: 1000,
   });
@@ -38,12 +40,14 @@ export default function Courses() {
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">Manage Courses</h1>
       <hr />
-      <button
-        className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
-        onClick={() => setAddCourseShow(true)}
-      >
-        <Plus /> Add Course
-      </button>
+      {authenticatedUser.role !== "user" ? (
+        <button
+          className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
+          onClick={() => setAddCourseShow(true)}
+        >
+          <Plus /> Add Course
+        </button>
+      ) : null}
 
       <CoursesTable data={data} isLoading={isLoading} />
 
