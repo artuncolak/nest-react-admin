@@ -28,7 +28,7 @@ I used it for routing.
 
 > What's the command to start the application locally?
 
-You can run the entire app with docker locally.
+You can deploy the entire app using docker compose.
 
 On root directory
 
@@ -36,7 +36,7 @@ On root directory
 docker-compose up -d
 ```
 
-### Running seperately
+## **Running locally**
 
 ## Backend
 
@@ -51,14 +51,7 @@ yarn
 ### Running the app
 
 ```bash
-# development
 $ yarn start
-
-# watch mode
-$ yarn start:dev
-
-# production mode
-$ yarn start:prod
 ```
 
 ## Frontend
@@ -79,7 +72,7 @@ $ yarn start
 
 > How long did you spend on the coding project? What would you add to your solution if you had more time? If you didn't spend much time on the coding project, then use this as an opportunity to explain what you would add.
 
-I spent 24 hours to finish the project. I would add more tests to frontend and pagination for the backend.
+I spent 12 hours to finish the project. I would add more tests to frontend and pagination for the backend.
 
 > What was the most useful feature that was added to the latest version of your chosen language? Please include a snippet of code that shows how you've used it.
 
