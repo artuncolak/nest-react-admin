@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { AlertTriangle, Loader, X } from "react-feather";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { AlertTriangle, Loader, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
-import useAuth from "../../hooks/useAuth";
-import Course from "../../models/course/Course";
-import UpdateCourseRequest from "../../models/course/UpdateCourseRequest";
-import courseService from "../../services/CourseService";
-import Modal from "../shared/Modal";
-import Table from "../shared/Table";
-import TableItem from "../shared/TableItem";
+import useAuth from '../../hooks/useAuth';
+import Course from '../../models/course/Course';
+import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
+import courseService from '../../services/CourseService';
+import Modal from '../shared/Modal';
+import Table from '../shared/Table';
+import TableItem from '../shared/TableItem';
 
 interface UsersTableProps {
   data: Course[];
@@ -45,7 +45,9 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
     }
   };
 
-  const handleUpdateCourse = async (updateCourseRequest: UpdateCourseRequest) => {
+  const handleUpdateCourse = async (
+    updateCourseRequest: UpdateCourseRequest,
+  ) => {
     try {
       await courseService.update(selectedCourse.id, updateCourseRequest);
       setUpdateShow(false);
@@ -59,7 +61,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={["Name", "Description", "Created"]}>
+        <Table columns={['Name', 'Description', 'Created']}>
           {isLoading
             ? null
             : data.map((course) => {
@@ -74,7 +76,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                       {new Date(dateCreated).toLocaleDateString()}
                     </TableItem>
                     <TableItem className="text-right">
-                      {["admin", "editor"].includes(authenticatedUser.role) ? (
+                      {['admin', 'editor'].includes(authenticatedUser.role) ? (
                         <button
                           className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
                           onClick={() => {
@@ -85,7 +87,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                           Edit
                         </button>
                       ) : null}
-                      {authenticatedUser.role === "admin" ? (
+                      {authenticatedUser.role === 'admin' ? (
                         <button
                           className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                           onClick={() => {
@@ -137,7 +139,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
             {isDeleting ? (
               <Loader className="mx-auto animate-spin" />
             ) : (
-              "Delete"
+              'Delete'
             )}
           </button>
         </div>
@@ -174,7 +176,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
               className="input"
               placeholder="Name"
               defaultValue={selectedCourse.name}
-              {...register("name")}
+              {...register('name')}
             />
             <input
               type="text"
@@ -182,13 +184,13 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
               placeholder="Description"
               defaultValue={selectedCourse.description}
               disabled={isSubmitting}
-              {...register("description")}
+              {...register('description')}
             />
             <button className="btn" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader className="animate-spin mx-auto" />
               ) : (
-                "Save"
+                'Save'
               )}
             </button>
             {error ? (

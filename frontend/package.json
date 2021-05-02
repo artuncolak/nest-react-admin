@@ -35,11 +35,13 @@
       "react-app/jest"
     ],
     "plugins": [
-      "simple-import-sort"
+      "simple-import-sort",
+      "prettier"
     ],
     "rules": {
       "simple-import-sort/imports": "error",
-      "simple-import-sort/exports": "error"
+      "simple-import-sort/exports": "error",
+      "prettier/prettier": "error"
     }
   },
   "browserslist": {
@@ -58,8 +60,10 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
     "autoprefixer": "^9",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "postcss": "^7",
+    "prettier": "^2.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }

@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Loader } from "react-feather";
-import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useState } from 'react';
+import { Loader } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
-import useAuth from "../hooks/useAuth";
-import LoginRequest from "../models/auth/LoginRequest";
-import authService from "../services/AuthService";
+import useAuth from '../hooks/useAuth';
+import LoginRequest from '../models/auth/LoginRequest';
+import authService from '../services/AuthService';
 
 export default function Login() {
   const {
@@ -21,7 +21,7 @@ export default function Login() {
     try {
       const data = await authService.login(loginRequest);
       setAuthenticatedUser(data.user);
-      history.push("/");
+      history.push('/');
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -42,7 +42,7 @@ export default function Login() {
             placeholder="Username"
             required
             disabled={isSubmitting}
-            {...register("username")}
+            {...register('username')}
           />
           <input
             type="password"
@@ -50,7 +50,7 @@ export default function Login() {
             placeholder="Password"
             required
             disabled={isSubmitting}
-            {...register("password")}
+            {...register('password')}
           />
           <button
             className="btn mt-3 sm:text-lg"
@@ -60,7 +60,7 @@ export default function Login() {
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              "Login"
+              'Login'
             )}
           </button>
           {error ? (

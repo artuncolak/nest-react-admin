@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import { Redirect, Route, RouteProps } from "react-router";
+import { useContext } from 'react';
+import { Redirect, Route, RouteProps } from 'react-router';
 
-import { AuthenticationContext } from "./context/AuthenticationContext";
+import { AuthenticationContext } from './context/AuthenticationContext';
 
-export { Route } from "react-router";
+export { Route } from 'react-router';
 
 interface PrivateRouteProps extends RouteProps {
   roles?: string[];

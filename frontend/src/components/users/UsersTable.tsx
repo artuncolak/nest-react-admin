@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { AlertTriangle, Loader, X } from "react-feather";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { AlertTriangle, Loader, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
 
-import UpdateUserRequest from "../../models/user/UpdateUserRequest";
-import User from "../../models/user/User";
-import userService from "../../services/UserService";
-import Modal from "../shared/Modal";
-import Table from "../shared/Table";
-import TableItem from "../shared/TableItem";
+import UpdateUserRequest from '../../models/user/UpdateUserRequest';
+import User from '../../models/user/User';
+import userService from '../../services/UserService';
+import Modal from '../shared/Modal';
+import Table from '../shared/Table';
+import TableItem from '../shared/TableItem';
 
 interface UsersTableProps {
   data: User[];
@@ -59,7 +59,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={["Name", "Username", "Status", "Role"]}>
+        <Table columns={['Name', 'Username', 'Status', 'Role']}>
           {isLoading
             ? null
             : data.map((user) => {
@@ -148,7 +148,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
             {isDeleting ? (
               <Loader className="mx-auto animate-spin" />
             ) : (
-              "Delete"
+              'Delete'
             )}
           </button>
         </div>
@@ -186,7 +186,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
                 className="input sm:w-1/2"
                 placeholder="First Name"
                 defaultValue={selectedUser.firstName}
-                {...register("firstName")}
+                {...register('firstName')}
               />
               <input
                 type="text"
@@ -194,7 +194,7 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
                 placeholder="Last Name"
                 defaultValue={selectedUser.lastName}
                 disabled={isSubmitting}
-                {...register("lastName")}
+                {...register('lastName')}
               />
             </div>
             <input
@@ -203,18 +203,18 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
               placeholder="Username"
               defaultValue={selectedUser.username}
               disabled={isSubmitting}
-              {...register("username")}
+              {...register('username')}
             />
             <input
               type="password"
               className="input"
               placeholder="Password"
               disabled={isSubmitting}
-              {...register("password")}
+              {...register('password')}
             />
             <select
               className="input"
-              {...register("role")}
+              {...register('role')}
               disabled={isSubmitting}
               defaultValue={selectedUser.role}
             >
@@ -228,14 +228,14 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
                 type="checkbox"
                 className="input w-5 h-5"
                 defaultChecked={selectedUser.isActive}
-                {...register("isActive")}
+                {...register('isActive')}
               />
             </div>
             <button className="btn" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader className="animate-spin mx-auto" />
               ) : (
-                "Save"
+                'Save'
               )}
             </button>
             {error ? (

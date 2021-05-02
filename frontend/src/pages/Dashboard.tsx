@@ -1,11 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery } from 'react-query';
 
-import UpdateProfile from "../components/dashboard/UpdateProfile";
-import Layout from "../components/layout";
-import statsService from "../services/StatsService";
+import UpdateProfile from '../components/dashboard/UpdateProfile';
+import Layout from '../components/layout';
+import statsService from '../services/StatsService';
 
 export default function Dashboard() {
-  const { data, isLoading } = useQuery("stats", statsService.getStats);
+  const { data, isLoading } = useQuery('stats', statsService.getStats);
 
   return (
     <Layout>

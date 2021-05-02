@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { AlertTriangle, Loader, X } from "react-feather";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { AlertTriangle, Loader, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
 
-import useAuth from "../../hooks/useAuth";
-import Content from "../../models/content/Content";
-import UpdateContentRequest from "../../models/content/UpdateContentRequest";
-import contentService from "../../services/ContentService";
-import Modal from "../shared/Modal";
-import Table from "../shared/Table";
-import TableItem from "../shared/TableItem";
+import useAuth from '../../hooks/useAuth';
+import Content from '../../models/content/Content';
+import UpdateContentRequest from '../../models/content/UpdateContentRequest';
+import contentService from '../../services/ContentService';
+import Modal from '../shared/Modal';
+import Table from '../shared/Table';
+import TableItem from '../shared/TableItem';
 
 interface ContentsTableProps {
   data: Content[];
@@ -49,13 +49,13 @@ export default function ContentsTable({
   };
 
   const handleUpdateContent = async (
-    updateContentRequest: UpdateContentRequest
+    updateContentRequest: UpdateContentRequest,
   ) => {
     try {
       await contentService.update(
         courseId,
         selectedContent.id,
-        updateContentRequest
+        updateContentRequest,
       );
       setUpdateShow(false);
       setSelectedContent(null);
@@ -68,7 +68,7 @@ export default function ContentsTable({
   return (
     <>
       <div className="table-container">
-        <Table columns={["Name", "Description", "Created"]}>
+        <Table columns={['Name', 'Description', 'Created']}>
           {isLoading
             ? null
             : data.map((course) => {
@@ -81,7 +81,7 @@ export default function ContentsTable({
                       {new Date(dateCreated).toLocaleDateString()}
                     </TableItem>
                     <TableItem className="text-right">
-                      {["admin", "editor"].includes(authenticatedUser.role) ? (
+                      {['admin', 'editor'].includes(authenticatedUser.role) ? (
                         <button
                           className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
                           onClick={() => {
@@ -92,7 +92,7 @@ export default function ContentsTable({
                           Edit
                         </button>
                       ) : null}
-                      {authenticatedUser.role === "admin" ? (
+                      {authenticatedUser.role === 'admin' ? (
                         <button
                           className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                           onClick={() => {
@@ -144,7 +144,7 @@ export default function ContentsTable({
             {isDeleting ? (
               <Loader className="mx-auto animate-spin" />
             ) : (
-              "Delete"
+              'Delete'
             )}
           </button>
         </div>
@@ -181,7 +181,7 @@ export default function ContentsTable({
               className="input"
               placeholder="Name"
               defaultValue={selectedContent.name}
-              {...register("name")}
+              {...register('name')}
             />
             <input
               type="text"
@@ -189,13 +189,13 @@ export default function ContentsTable({
               placeholder="Description"
               defaultValue={selectedContent.description}
               disabled={isSubmitting}
-              {...register("description")}
+              {...register('description')}
             />
             <button className="btn" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader className="animate-spin mx-auto" />
               ) : (
-                "Save"
+                'Save'
               )}
             </button>
             {error ? (

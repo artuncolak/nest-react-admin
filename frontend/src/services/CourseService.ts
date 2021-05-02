@@ -1,17 +1,17 @@
-import Course from "../models/course/Course";
-import CourseQuery from "../models/course/CourseQuery";
-import CreateCourseRequest from "../models/course/CreateCourseRequest";
-import UpdateCourseRequest from "../models/course/UpdateCourseRequest";
-import apiService from "./ApiService";
+import Course from '../models/course/Course';
+import CourseQuery from '../models/course/CourseQuery';
+import CreateCourseRequest from '../models/course/CreateCourseRequest';
+import UpdateCourseRequest from '../models/course/UpdateCourseRequest';
+import apiService from './ApiService';
 
 class UserService {
   async save(createCourseRequest: CreateCourseRequest): Promise<void> {
-    await apiService.post("/api/courses", createCourseRequest);
+    await apiService.post('/api/courses', createCourseRequest);
   }
 
   async findAll(courseQuery: CourseQuery): Promise<Course[]> {
     return (
-      await apiService.get<Course[]>("/api/courses", { params: courseQuery })
+      await apiService.get<Course[]>('/api/courses', { params: courseQuery })
     ).data;
   }
 
@@ -21,7 +21,7 @@ class UserService {
 
   async update(
     id: string,
-    updateCourseRequest: UpdateCourseRequest
+    updateCourseRequest: UpdateCourseRequest,
   ): Promise<void> {
     await apiService.put(`/api/courses/${id}`, updateCourseRequest);
   }

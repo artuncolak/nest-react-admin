@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Loader } from "react-feather";
-import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
+import { useState } from 'react';
+import { Loader } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 
-import useAuth from "../../hooks/useAuth";
-import UpdateUserRequest from "../../models/user/UpdateUserRequest";
-import userService from "../../services/UserService";
+import useAuth from '../../hooks/useAuth';
+import UpdateUserRequest from '../../models/user/UpdateUserRequest';
+import userService from '../../services/UserService';
 
 export default function UpdateProfile() {
   const { authenticatedUser } = useAuth();
   const { data, isLoading, refetch } = useQuery(
     `user-${authenticatedUser.id}`,
-    () => userService.findOne(authenticatedUser.id)
+    () => userService.findOne(authenticatedUser.id),
   );
   const [error, setError] = useState<string>();
   const {
@@ -51,7 +51,7 @@ export default function UpdateProfile() {
                 defaultValue={data.firstName}
                 disabled={isSubmitting}
                 placeholder="First Name"
-                {...register("firstName")}
+                {...register('firstName')}
               />
             </div>
             <div className="w-1/2">
@@ -62,7 +62,7 @@ export default function UpdateProfile() {
                 defaultValue={data.lastName}
                 disabled={isSubmitting}
                 placeholder="Last Name"
-                {...register("lastName")}
+                {...register('lastName')}
               />
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function UpdateProfile() {
               defaultValue={data.username}
               disabled={isSubmitting}
               placeholder="Username"
-              {...register("username")}
+              {...register('username')}
             />
           </div>
           <div className="w-full">
@@ -84,14 +84,14 @@ export default function UpdateProfile() {
               className="input w-full mt-1"
               placeholder="Password"
               disabled={isSubmitting}
-              {...register("password")}
+              {...register('password')}
             />
           </div>
           <button className="btn w-full" disabled={isSubmitting}>
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              "Update"
+              'Update'
             )}
           </button>
           {error ? (

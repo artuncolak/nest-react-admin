@@ -1,27 +1,27 @@
-import { useState } from "react";
-import { Loader, Plus, X } from "react-feather";
-import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
-import { useParams } from "react-router";
+import { useState } from 'react';
+import { Loader, Plus, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router';
 
-import ContentsTable from "../components/content/ContentsTable";
-import Layout from "../components/layout";
-import Modal from "../components/shared/Modal";
-import useAuth from "../hooks/useAuth";
-import CreateContentRequest from "../models/content/CreateContentRequest";
-import contentService from "../services/ContentService";
-import courseService from "../services/CourseService";
+import ContentsTable from '../components/content/ContentsTable';
+import Layout from '../components/layout';
+import Modal from '../components/shared/Modal';
+import useAuth from '../hooks/useAuth';
+import CreateContentRequest from '../models/content/CreateContentRequest';
+import contentService from '../services/ContentService';
+import courseService from '../services/CourseService';
 
 export default function Course() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
   const { id } = useParams<{ id: string }>();
   const { authenticatedUser } = useAuth();
 
-  const userQuery = useQuery("user", async () => courseService.findOne(id));
+  const userQuery = useQuery('user', async () => courseService.findOne(id));
 
   const {
     register,
@@ -39,7 +39,7 @@ export default function Course() {
       }),
     {
       refetchInterval: 1000,
-    }
+    },
   );
 
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
@@ -56,10 +56,10 @@ export default function Course() {
   return (
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">
-        {!userQuery.isLoading ? `${userQuery.data.name} Contents` : ""}
+        {!userQuery.isLoading ? `${userQuery.data.name} Contents` : ''}
       </h1>
       <hr />
-      {authenticatedUser.role !== "user" ? (
+      {authenticatedUser.role !== 'user' ? (
         <button
           className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
           onClick={() => setAddContentShow(true)}
@@ -115,7 +115,7 @@ export default function Course() {
             placeholder="Name"
             disabled={isSubmitting}
             required
-            {...register("name")}
+            {...register('name')}
           />
           <input
             type="text"
@@ -123,13 +123,13 @@ export default function Course() {
             placeholder="Description"
             disabled={isSubmitting}
             required
-            {...register("description")}
+            {...register('description')}
           />
           <button className="btn" disabled={isSubmitting}>
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              "Save"
+              'Save'
             )}
           </button>
           {error ? (

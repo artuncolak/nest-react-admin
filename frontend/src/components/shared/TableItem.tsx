@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface TableItemProps {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface TableItemProps {
 
 export default function TableItem({ children, className }: TableItemProps) {
   return (
-    <td className={"px-6 py-4 text-sm font-medium text-gray-900 " + className}>
+    <td className={'px-6 py-4 text-sm font-medium text-gray-900 ' + className}>
       {children}
     </td>
   );

@@ -1,17 +1,17 @@
-import CreateUserRequest from "../models/user/CreateUserRequest";
-import UpdateUserRequest from "../models/user/UpdateUserRequest";
-import User from "../models/user/User";
-import UserQuery from "../models/user/UserQuery";
-import apiService from "./ApiService";
+import CreateUserRequest from '../models/user/CreateUserRequest';
+import UpdateUserRequest from '../models/user/UpdateUserRequest';
+import User from '../models/user/User';
+import UserQuery from '../models/user/UserQuery';
+import apiService from './ApiService';
 
 class UserService {
   async save(createUserRequest: CreateUserRequest): Promise<void> {
-    await apiService.post("/api/users", createUserRequest);
+    await apiService.post('/api/users', createUserRequest);
   }
 
   async findAll(userQuery: UserQuery): Promise<User[]> {
     return (
-      await apiService.get<User[]>("/api/users", {
+      await apiService.get<User[]>('/api/users', {
         params: userQuery,
       })
     ).data;
@@ -23,7 +23,7 @@ class UserService {
 
   async update(
     id: string,
-    updateUserRequest: UpdateUserRequest
+    updateUserRequest: UpdateUserRequest,
   ): Promise<void> {
     const {
       firstName,

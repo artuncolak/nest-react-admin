@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { Loader, Plus, Search, X } from "react-feather";
-import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
+import { useState } from 'react';
+import { Loader, Plus, Search, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 
-import Layout from "../components/layout";
-import Modal from "../components/shared/Modal";
-import UsersTable from "../components/users/UsersTable";
-import useAuth from "../hooks/useAuth";
-import CreateUserRequest from "../models/user/CreateUserRequest";
-import userService from "../services/UserService";
+import Layout from '../components/layout';
+import Modal from '../components/shared/Modal';
+import UsersTable from '../components/users/UsersTable';
+import useAuth from '../hooks/useAuth';
+import CreateUserRequest from '../models/user/CreateUserRequest';
+import userService from '../services/UserService';
 
 export default function Users() {
   const { authenticatedUser } = useAuth();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
 
   const { data, isLoading } = useQuery(
-    ["users", firstName, lastName, username, role],
+    ['users', firstName, lastName, username, role],
     async () => {
       return (
         await userService.findAll({
@@ -31,7 +31,7 @@ export default function Users() {
     },
     {
       refetchInterval: 1000,
-    }
+    },
   );
   const {
     register,
@@ -132,14 +132,14 @@ export default function Users() {
               className="input sm:w-1/2"
               placeholder="First Name"
               disabled={isSubmitting}
-              {...register("firstName")}
+              {...register('firstName')}
             />
             <input
               type="text"
               className="input sm:w-1/2"
               placeholder="Last Name"
               disabled={isSubmitting}
-              {...register("lastName")}
+              {...register('lastName')}
             />
           </div>
           <input
@@ -147,18 +147,18 @@ export default function Users() {
             className="input"
             placeholder="Username"
             disabled={isSubmitting}
-            {...register("username")}
+            {...register('username')}
           />
           <input
             type="password"
             className="input"
             placeholder="Password"
             disabled={isSubmitting}
-            {...register("password")}
+            {...register('password')}
           />
           <select
             className="input"
-            {...register("role")}
+            {...register('role')}
             disabled={isSubmitting}
           >
             <option value="user">User</option>
@@ -169,7 +169,7 @@ export default function Users() {
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              "Save"
+              'Save'
             )}
           </button>
           {error ? (

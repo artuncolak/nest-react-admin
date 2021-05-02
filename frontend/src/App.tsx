@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { useContext, useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { AuthenticationContext } from "./context/AuthenticationContext";
-import Contents from "./pages/Contents";
-import Courses from "./pages/Courses";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Users from "./pages/Users";
-import { AuthRoute, PrivateRoute } from "./Route";
-import authService from "./services/AuthService";
+import { AuthenticationContext } from './context/AuthenticationContext';
+import Contents from './pages/Contents';
+import Courses from './pages/Courses';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Users from './pages/Users';
+import { AuthRoute, PrivateRoute } from './Route';
+import authService from './services/AuthService';
 
 export default function App() {
   const { authenticatedUser, setAuthenticatedUser } = useContext(
-    AuthenticationContext
+    AuthenticationContext,
   );
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -39,7 +39,7 @@ export default function App() {
     <Router>
       <Switch>
         <PrivateRoute exact path="/" component={Dashboard} />
-        <PrivateRoute exact path="/users" component={Users} roles={["admin"]} />
+        <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
         <PrivateRoute exact path="/courses" component={Courses} />
         <PrivateRoute exact path="/courses/:id" component={Contents} />
 

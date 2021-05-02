@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-import authService from "./AuthService";
+import authService from './AuthService';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

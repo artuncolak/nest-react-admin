@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { Loader, Plus, X } from "react-feather";
-import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
+import { useState } from 'react';
+import { Loader, Plus, X } from 'react-feather';
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
 
-import CoursesTable from "../components/courses/CoursesTable";
-import Layout from "../components/layout";
-import Modal from "../components/shared/Modal";
-import useAuth from "../hooks/useAuth";
-import CreateCourseRequest from "../models/course/CreateCourseRequest";
-import courseService from "../services/CourseService";
+import CoursesTable from '../components/courses/CoursesTable';
+import Layout from '../components/layout';
+import Modal from '../components/shared/Modal';
+import useAuth from '../hooks/useAuth';
+import CreateCourseRequest from '../models/course/CreateCourseRequest';
+import courseService from '../services/CourseService';
 
 export default function Courses() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery(
-    ["courses", name, description],
+    ['courses', name, description],
     () =>
       courseService.findAll({
         name: name || undefined,
@@ -24,7 +24,7 @@ export default function Courses() {
       }),
     {
       refetchInterval: 1000,
-    }
+    },
   );
 
   const {
@@ -52,7 +52,7 @@ export default function Courses() {
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">Manage Courses</h1>
       <hr />
-      {authenticatedUser.role !== "user" ? (
+      {authenticatedUser.role !== 'user' ? (
         <button
           className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
           onClick={() => setAddCourseShow(true)}
@@ -108,7 +108,7 @@ export default function Courses() {
             placeholder="Name"
             disabled={isSubmitting}
             required
-            {...register("name")}
+            {...register('name')}
           />
           <input
             type="text"
@@ -116,13 +116,13 @@ export default function Courses() {
             placeholder="Description"
             disabled={isSubmitting}
             required
-            {...register("description")}
+            {...register('description')}
           />
           <button className="btn" disabled={isSubmitting}>
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : (
-              "Save"
+              'Save'
             )}
           </button>
           {error ? (
