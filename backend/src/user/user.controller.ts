@@ -61,7 +61,6 @@ export class UserController {
   }
 
   @Delete('/:id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles(Role.Admin)
   async delete(@Param('id') id: string): Promise<string> {
     return await this.userService.delete(id);

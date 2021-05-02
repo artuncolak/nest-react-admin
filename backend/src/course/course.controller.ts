@@ -12,12 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ContentQuery } from 'src/content/content.query';
 
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateContentDto, UpdateContentDto } from '../content/content.dto';
 import { Content } from '../content/content.entity';
+import { ContentQuery } from '../content/content.query';
 import { ContentService } from '../content/content.service';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
@@ -62,7 +62,6 @@ export class CourseController {
   }
 
   @Delete('/:id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles(Role.Admin)
   async delete(@Param('id') id: string): Promise<string> {
     return await this.courseService.delete(id);
@@ -96,7 +95,6 @@ export class CourseController {
   }
 
   @Delete('/:id/contents/:contentId')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles(Role.Admin)
   async deleteContent(
     @Param('id') id: string,

@@ -8,6 +8,21 @@ import { AppModule } from './app.module';
 import { Role } from './enums/role.enum';
 import { User } from './user/user.entity';
 
+async function createAdminOnFirstUse() {
+  const admin = await User.findOne({ where: { username: 'admin' } });
+
+  if (!admin) {
+    await User.create({
+      firstName: 'admin',
+      lastName: 'admin',
+      isActive: true,
+      username: 'admin',
+      role: Role.Admin,
+      password: await bcrypt.hash('admin123', 10),
+    }).save();
+  }
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
@@ -23,18 +38,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 
-  const admin = await User.findOne({ where: { username: 'admin' } });
-
-  if (!admin) {
-    await User.create({
-      firstName: 'admin',
-      lastName: 'admin',
-      isActive: true,
-      username: 'admin',
-      role: Role.Admin,
-      password: await bcrypt.hash('551141', 10),
-    }).save();
-  }
+  await createAdminOnFirstUse();
 
   await app.listen(5000);
 }
