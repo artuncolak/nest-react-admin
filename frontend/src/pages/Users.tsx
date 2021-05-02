@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader, Plus, X } from "react-feather";
+import { Loader, Plus, Search, X } from "react-feather";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 
@@ -58,13 +58,13 @@ export default function Users() {
       <h1 className="font-semibold text-3xl mb-5">Manage Users</h1>
       <hr />
       <button
-        className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
+        className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
         onClick={() => setAddUserShow(true)}
       >
         <Plus /> Add User
       </button>
 
-      <div className="table-filter">
+      <div className="table-filter mt-2">
         <div className="flex flex-row gap-5">
           <input
             type="text"

@@ -34,7 +34,7 @@ export class CourseService {
 
   async update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
     const course = await this.findById(id);
-    return await Course.create({ id: course.id, ...updateCourseDto });
+    return await Course.create({ id: course.id, ...updateCourseDto }).save();
   }
 
   async delete(id: string): Promise<string> {

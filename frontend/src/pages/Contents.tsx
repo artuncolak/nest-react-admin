@@ -61,7 +61,7 @@ export default function Course() {
       <hr />
       {authenticatedUser.role !== "user" ? (
         <button
-          className="btn mt-5 flex gap-2 w-full sm:w-auto justify-center"
+          className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
           onClick={() => setAddContentShow(true)}
         >
           <Plus /> Add Content

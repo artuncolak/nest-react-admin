@@ -32,6 +32,9 @@ export class UserService {
 
     return User.find({
       where: userQuery,
+      order: {
+        firstName: 'DESC',
+      },
     });
   }
 
