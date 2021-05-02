@@ -1,4 +1,5 @@
 import Course from "../models/course/Course";
+import CourseQuery from "../models/course/CourseQuery";
 import CreateCourseRequest from "../models/course/CreateCourseRequest";
 import UpdateCourseRequest from "../models/course/UpdateCourseRequest";
 import apiService from "./ApiService";
@@ -8,8 +9,10 @@ class UserService {
     await apiService.post("/api/courses", createCourseRequest);
   }
 
-  async findAll(): Promise<Course[]> {
-    return (await apiService.get<Course[]>("/api/courses")).data;
+  async findAll(courseQuery: CourseQuery): Promise<Course[]> {
+    return (
+      await apiService.get<Course[]>("/api/courses", { params: courseQuery })
+    ).data;
   }
 
   async findOne(id: string): Promise<Course> {

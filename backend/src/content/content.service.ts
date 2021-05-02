@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ILike } from 'typeorm';
 
 import { CourseService } from '../course/course.service';
 import { CreateContentDto, UpdateContentDto } from './content.dto';
 import { Content } from './content.entity';
+import { ContentQuery } from './content.query';
 
 @Injectable()
 export class ContentService {
@@ -22,8 +24,12 @@ export class ContentService {
     }).save();
   }
 
-  async findAll(): Promise<Content[]> {
-    return await Content.find();
+  async findAll(contentQuery: ContentQuery): Promise<Content[]> {
+    Object.keys(contentQuery).forEach((key) => {
+      contentQuery[key] = ILike(`%${contentQuery[key]}%`);
+    });
+
+    return await Content.find({ where: contentQuery });
   }
 
   async findById(id: string): Promise<Content> {
@@ -50,8 +56,14 @@ export class ContentService {
     return content;
   }
 
-  async findAllByCourseId(courseId: string): Promise<Content[]> {
-    return await Content.find({ where: { courseId } });
+  async findAllByCourseId(
+    courseId: string,
+    contentQuery: ContentQuery,
+  ): Promise<Content[]> {
+    Object.keys(contentQuery).forEach((key) => {
+      contentQuery[key] = ILike(`%${contentQuery[key]}%`);
+    });
+    return await Content.find({ where: { courseId, ...contentQuery } });
   }
 
   async update(

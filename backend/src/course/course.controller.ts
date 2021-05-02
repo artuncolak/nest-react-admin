@@ -8,9 +8,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ContentQuery } from 'src/content/content.query';
 
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -21,6 +23,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
 import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { Course } from './course.entity';
+import { CourseQuery } from './course.query';
 import { CourseService } from './course.service';
 
 @Controller('courses')
@@ -40,8 +43,8 @@ export class CourseController {
   }
 
   @Get()
-  async findAll(): Promise<Course[]> {
-    return await this.courseService.findAll();
+  async findAll(@Query() courseQuery: CourseQuery): Promise<Course[]> {
+    return await this.courseService.findAll(courseQuery);
   }
 
   @Get('/:id')
@@ -75,8 +78,11 @@ export class CourseController {
   }
 
   @Get('/:id/contents')
-  async findAllContentsByCourseId(@Param('id') id: string): Promise<Content[]> {
-    return await this.contentService.findAllByCourseId(id);
+  async findAllContentsByCourseId(
+    @Param('id') id: string,
+    @Query() contentQuery: ContentQuery,
+  ): Promise<Content[]> {
+    return await this.contentService.findAllByCourseId(id, contentQuery);
   }
 
   @Put('/:id/contents/:contentId')

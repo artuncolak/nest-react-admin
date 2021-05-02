@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { ILike } from 'typeorm';
 
-import { Role } from '../enums/role.enum';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
+import { UserQuery } from './user.query';
 
 @Injectable()
 export class UserService {
@@ -22,8 +23,16 @@ export class UserService {
     return User.create(createUserDto).save();
   }
 
-  async findAll(): Promise<User[]> {
-    return User.find({ where: [{ role: Role.User }, { role: Role.Editor }] });
+  async findAll(userQuery: UserQuery): Promise<User[]> {
+    Object.keys(userQuery).forEach((key) => {
+      if (key !== 'role') {
+        userQuery[key] = ILike(`%${userQuery[key]}%`);
+      }
+    });
+
+    return User.find({
+      where: userQuery,
+    });
   }
 
   async findById(id: string): Promise<User> {

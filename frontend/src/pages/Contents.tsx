@@ -13,20 +13,30 @@ import contentService from "../services/ContentService";
 import courseService from "../services/CourseService";
 
 export default function Course() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [addContentShow, setAddContentShow] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
   const { id } = useParams<{ id: string }>();
   const { authenticatedUser } = useAuth();
+
   const userQuery = useQuery("user", async () => courseService.findOne(id));
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
     reset,
   } = useForm<CreateContentRequest>();
-  const [addContentShow, setAddContentShow] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
+
   const { data, isLoading } = useQuery(
-    `contents-${id}`,
-    async () => contentService.findAll(id),
+    [`contents-${id}`, name, description],
+    async () =>
+      contentService.findAll(id, {
+        name: name || undefined,
+        description: description || undefined,
+      }),
     {
       refetchInterval: 1000,
     }
@@ -57,6 +67,25 @@ export default function Course() {
           <Plus /> Add Content
         </button>
       ) : null}
+
+      <div className="table-filter">
+        <div className="flex flex-row gap-5">
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+      </div>
 
       <ContentsTable data={data} isLoading={isLoading} courseId={id} />
 

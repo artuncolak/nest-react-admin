@@ -98,7 +98,7 @@ describe('UserController', () => {
 
   describe('findAllUsers', () => {
     it('should get the list of users', async () => {
-      const users = await controller.findAll();
+      const users = await controller.findAll({});
       expect(typeof users).toBe('object');
       expect(users[0].firstName).toBe('test1');
       expect(users[1].lastName).toBe('test2');

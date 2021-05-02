@@ -87,7 +87,7 @@ describe('CourseService', () => {
 
   describe('findAllCourses', () => {
     it('should get the array of courses ', async () => {
-      const courses = await service.findAll();
+      const courses = await service.findAll({});
       expect(courses[0].id).toBe('testid1');
       expect(courses[1].name).toBe('test2');
       expect(courses[2].description).toBe('test3');

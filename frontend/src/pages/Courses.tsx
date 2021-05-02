@@ -11,10 +11,21 @@ import CreateCourseRequest from "../models/course/CreateCourseRequest";
 import courseService from "../services/CourseService";
 
 export default function Courses() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery("courses", courseService.findAll, {
-    refetchInterval: 1000,
-  });
+  const { data, isLoading } = useQuery(
+    ["courses", name, description],
+    () =>
+      courseService.findAll({
+        name: name || undefined,
+        description: description || undefined,
+      }),
+    {
+      refetchInterval: 1000,
+    }
+  );
 
   const {
     register,
@@ -49,6 +60,25 @@ export default function Courses() {
           <Plus /> Add Course
         </button>
       ) : null}
+
+      <div className="table-filter">
+        <div className="flex flex-row gap-5">
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+      </div>
 
       <CoursesTable data={data} isLoading={isLoading} />
 

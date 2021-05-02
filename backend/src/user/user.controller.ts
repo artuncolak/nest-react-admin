@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,6 +22,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
+import { UserQuery } from './user.query';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -40,8 +42,8 @@ export class UserController {
 
   @Get()
   @Roles(Role.Admin)
-  async findAll(): Promise<User[]> {
-    return await this.userService.findAll();
+  async findAll(@Query() userQuery: UserQuery): Promise<User[]> {
+    return await this.userService.findAll(userQuery);
   }
 
   @Get('/:id')

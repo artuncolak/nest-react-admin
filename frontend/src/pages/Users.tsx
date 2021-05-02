@@ -6,13 +6,33 @@ import { useQuery } from "react-query";
 import Layout from "../components/layout";
 import Modal from "../components/shared/Modal";
 import UsersTable from "../components/users/UsersTable";
+import useAuth from "../hooks/useAuth";
 import CreateUserRequest from "../models/user/CreateUserRequest";
 import userService from "../services/UserService";
 
 export default function Users() {
-  const { data, isLoading } = useQuery("users", userService.findAll, {
-    refetchInterval: 1000,
-  });
+  const { authenticatedUser } = useAuth();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+
+  const { data, isLoading } = useQuery(
+    ["users", firstName, lastName, username, role],
+    async () => {
+      return (
+        await userService.findAll({
+          firstName: firstName || undefined,
+          lastName: lastName || undefined,
+          username: username || undefined,
+          role: role || undefined,
+        })
+      ).filter((user) => user.id !== authenticatedUser.id);
+    },
+    {
+      refetchInterval: 1000,
+    }
+  );
   const {
     register,
     handleSubmit,
@@ -43,6 +63,46 @@ export default function Users() {
       >
         <Plus /> Add User
       </button>
+
+      <div className="table-filter">
+        <div className="flex flex-row gap-5">
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-row gap-5">
+          <input
+            type="text"
+            className="input w-1/2"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <select
+            name=""
+            id=""
+            className="input w-1/2"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="user">User</option>
+            <option value="editor">Editor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
 
       <UsersTable data={data} isLoading={isLoading} />
 

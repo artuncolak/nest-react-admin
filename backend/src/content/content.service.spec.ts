@@ -131,7 +131,7 @@ describe('ContentService', () => {
 
   describe('findAllContent', () => {
     it('should get the list of all contents', async () => {
-      const contents = await service.findAll();
+      const contents = await service.findAll({});
       expect(contents[0].id).toBe('testid1');
       expect(contents[1].name).toBe('test2');
       expect(contents[2].description).toBe('test3');
@@ -173,7 +173,7 @@ describe('ContentService', () => {
 
   describe('findAllContentsByCourseId', () => {
     it('should get the array of contents', async () => {
-      const contents = await service.findAllByCourseId('testcourseid');
+      const contents = await service.findAllByCourseId('testcourseid', {});
 
       expect(contents[0].id).toBe('testid1');
       expect(contents[1].name).toBe('test2');

@@ -1,6 +1,7 @@
 import CreateUserRequest from "../models/user/CreateUserRequest";
 import UpdateUserRequest from "../models/user/UpdateUserRequest";
 import User from "../models/user/User";
+import UserQuery from "../models/user/UserQuery";
 import apiService from "./ApiService";
 
 class UserService {
@@ -8,8 +9,12 @@ class UserService {
     await apiService.post("/api/users", createUserRequest);
   }
 
-  async findAll(): Promise<User[]> {
-    return (await apiService.get<User[]>("/api/users")).data;
+  async findAll(userQuery: UserQuery): Promise<User[]> {
+    return (
+      await apiService.get<User[]>("/api/users", {
+        params: userQuery,
+      })
+    ).data;
   }
 
   async findOne(id: string): Promise<User> {

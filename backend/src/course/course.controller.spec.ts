@@ -141,7 +141,7 @@ describe('CourseController', () => {
 
   describe('findAllCourses', () => {
     it('should get the array of courses ', async () => {
-      const courses = await controller.findAll();
+      const courses = await controller.findAll({});
       expect(courses[0].id).toBe('testid1');
       expect(courses[1].name).toBe('test2');
       expect(courses[2].description).toBe('test3');
@@ -216,6 +216,7 @@ describe('CourseController', () => {
     it('should get the array of contents', async () => {
       const contents = await controller.findAllContentsByCourseId(
         'testcourseid',
+        {},
       );
 
       expect(contents[0].id).toBe('testid1');

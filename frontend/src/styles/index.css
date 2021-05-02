@@ -40,6 +40,9 @@
   .table-container {
     @apply border rounded-lg mt-5 shadow overflow-x-auto;
   }
+  .table-filter {
+    @apply flex flex-col lg:flex-row gap-5 pl-1 pt-5 pb-1 overflow-x-auto;
+  }
   .sidebar {
     @apply fixed h-full w-72 p-5 shadow flex flex-col transform -translate-x-72 bg-white lg:translate-x-0 transition-transform;
   }
