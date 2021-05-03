@@ -82,7 +82,7 @@ Frontend will be started on http://localhost:3000
 
 > How long did you spend on the coding project? What would you add to your solution if you had more time? If you didn't spend much time on the coding project, then use this as an opportunity to explain what you would add.
 
-I spent 18 hours to finish the project.
+I spent 24 hours to finish the project.
 
 I would add
 1. Unit Tests and e2e tests for the frontend
