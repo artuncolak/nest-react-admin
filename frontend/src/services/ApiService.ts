@@ -20,7 +20,7 @@ axiosInstance.interceptors.response.use(
         error.response.config.headers.Authorization = `Bearer ${token}`;
         return axiosInstance(error.response.config);
       } catch (error) {
-        window.location.href = '/login';
+        //window.location.href = '/login';
         return Promise.reject(error);
       }
     }
