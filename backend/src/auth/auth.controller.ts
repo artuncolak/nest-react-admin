@@ -8,7 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { LoginDto, LoginResponseDto } from './auth.dto';
@@ -31,6 +31,7 @@ export class AuthController {
 
   @UseGuards(JwtGuard)
   @Post('/logout')
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   async logout(
     @Req() request: Request,
@@ -41,9 +42,12 @@ export class AuthController {
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Req() request: Request): Promise<LoginResponseDto> {
+  async refresh(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<LoginResponseDto> {
     const refresh = request.cookies['refresh-token'];
 
-    return await this.authService.refresh(refresh);
+    return await this.authService.refresh(refresh, response);
   }
 }

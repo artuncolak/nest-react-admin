@@ -47,6 +47,7 @@ export class UserController {
   }
 
   @Get('/:id')
+  @UseGuards(UserGuard)
   async findOne(@Param('id') id: string): Promise<User> {
     return await this.userService.findById(id);
   }

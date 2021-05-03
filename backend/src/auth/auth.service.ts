@@ -66,16 +66,20 @@ export class AuthService {
     return true;
   }
 
-  async refresh(refreshToken: string): Promise<LoginResponseDto> {
+  async refresh(
+    refreshToken: string,
+    response: Response,
+  ): Promise<LoginResponseDto> {
     if (!refreshToken) {
       throw new HttpException('Refresh token required', HttpStatus.BAD_REQUEST);
     }
 
-    const decoded = await this.jwtService.decode(refreshToken);
+    const decoded = this.jwtService.decode(refreshToken);
     const user = await this.userService.findById(decoded['sub']);
     const { firstName, lastName, username, id, role } = user;
 
     if (!(await bcrypt.compare(refreshToken, user.refreshToken))) {
+      response.clearCookie('refresh-token');
       throw new UnauthorizedException('Refresh token is not valid');
     }
 
@@ -83,18 +87,16 @@ export class AuthService {
       await this.jwtService.verifyAsync(refreshToken, {
         secret: this.REFRESH_SECRET,
       });
+      const accessToken = await this.jwtService.signAsync(
+        { username, firstName, lastName, role },
+        { subject: id, expiresIn: '15m', secret: this.SECRET },
+      );
+
+      return { token: accessToken, user };
     } catch (error) {
+      response.clearCookie('refresh-token');
       await this.userService.setRefreshToken(id, null);
       throw new UnauthorizedException('Refresh token is not valid');
     }
-
-    const accessToken = await this.jwtService.signAsync(
-      { username, firstName, lastName, role },
-      { subject: id, expiresIn: '15m', secret: this.SECRET },
-    );
-
-    await this.userService.setRefreshToken(id, refreshToken);
-
-    return { token: accessToken, user };
   }
 }
