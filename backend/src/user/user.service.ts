@@ -83,6 +83,7 @@ export class UserService {
     return await User.count();
   }
 
+  /* Hash the refresh token and save it to the database */
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     const user = await this.findById(id);
     await User.update(user, {

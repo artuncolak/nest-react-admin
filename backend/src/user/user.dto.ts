@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 import {
   IsBoolean,
   IsEnum,
@@ -31,7 +30,27 @@ export class CreateUserDto {
   role: Role;
 }
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+export class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  firstName?: string;
+
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+
+  @IsOptional()
+  @IsString()
+  username?: string;
+
+  @IsOptional()
+  @MinLength(6)
+  password?: string;
+
+  @IsOptional()
+  @IsEnum(Role)
+  role?: Role;
+
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;

@@ -1,5 +1,4 @@
-import { PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateContentDto {
   @IsNotEmpty()
@@ -11,4 +10,12 @@ export class CreateContentDto {
   description: string;
 }
 
-export class UpdateContentDto extends PartialType(CreateContentDto) {}
+export class UpdateContentDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+}

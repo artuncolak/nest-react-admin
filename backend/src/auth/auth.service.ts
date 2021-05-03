@@ -58,6 +58,7 @@ export class AuthService {
     return { token: accessToken, user };
   }
 
+  /* Because JWT is a stateless authentication, this function removes the refresh token from the cookies and the database */
   async logout(request: Request, response: Response): Promise<boolean> {
     const userId = request.user['userId'];
     await this.userService.setRefreshToken(userId, null);
