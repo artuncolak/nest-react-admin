@@ -79,7 +79,7 @@ Swagger Docs on http://localhost:3000/api/docs
 
 First you have to postgresql installed on your computer.
 
-Change the database properties on the backend/.env file.
+Edit the database properties on the backend/.env file.
 
 On backend directory
 
