@@ -9,11 +9,13 @@ import userService from '../../services/UserService';
 
 export default function UpdateProfile() {
   const { authenticatedUser } = useAuth();
+  const [error, setError] = useState<string>();
+
   const { data, isLoading, refetch } = useQuery(
     `user-${authenticatedUser.id}`,
     () => userService.findOne(authenticatedUser.id),
   );
-  const [error, setError] = useState<string>();
+
   const {
     register,
     handleSubmit,

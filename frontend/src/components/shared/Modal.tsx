@@ -11,17 +11,17 @@ export default function Modal({ children, className, show }: ModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let timeout: NodeJS.Timeout;
 
     if (show) {
       setIsVisible(true);
     } else {
-      interval = setInterval(() => {
+      timeout = setTimeout(() => {
         setIsVisible(false);
       }, 150);
     }
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeout);
   }, [show]);
 
   return createPortal(

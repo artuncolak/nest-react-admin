@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { AuthenticationContext } from './context/AuthenticationContext';
+import useAuth from './hooks/useAuth';
 import Contents from './pages/Contents';
 import Courses from './pages/Courses';
 import Dashboard from './pages/Dashboard';
@@ -11,28 +11,26 @@ import { AuthRoute, PrivateRoute } from './Route';
 import authService from './services/AuthService';
 
 export default function App() {
-  const { authenticatedUser, setAuthenticatedUser } = useContext(
-    AuthenticationContext,
-  );
+  const { authenticatedUser, setAuthenticatedUser } = useAuth();
   const [isLoaded, setIsLoaded] = useState(false);
 
   const authenticate = async () => {
-    if (!authenticatedUser) {
-      try {
-        const authResponse = await authService.refresh();
-        setAuthenticatedUser(authResponse.user);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoaded(true);
-      }
-    } else {
+    try {
+      const authResponse = await authService.refresh();
+      setAuthenticatedUser(authResponse.user);
+    } catch (error) {
+      console.log(error);
+    } finally {
       setIsLoaded(true);
     }
   };
 
   useEffect(() => {
-    authenticate();
+    if (!authenticatedUser) {
+      authenticate();
+    } else {
+      setIsLoaded(true);
+    }
   }, []);
 
   return isLoaded ? (

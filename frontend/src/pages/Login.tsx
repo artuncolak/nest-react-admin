@@ -8,14 +8,16 @@ import LoginRequest from '../models/auth/LoginRequest';
 import authService from '../services/AuthService';
 
 export default function Login() {
+  const { setAuthenticatedUser } = useAuth();
+  const history = useHistory();
+
+  const [error, setError] = useState<string>();
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginRequest>();
-  const history = useHistory();
-  const [error, setError] = useState<string>();
-  const { setAuthenticatedUser } = useAuth();
 
   const onSubmit = async (loginRequest: LoginRequest) => {
     try {
@@ -29,7 +31,7 @@ export default function Login() {
 
   return (
     <div className="h-full flex justify-center items-center">
-      <div className="card">
+      <div className="card shadow">
         <h1 className="mb-3 text-center font-semibold text-4xl">Login</h1>
         <hr />
         <form

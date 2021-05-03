@@ -6,6 +6,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+/* Auto refreshes the token if expired */
 axiosInstance.interceptors.response.use(
   (response) => response,
   async function (error) {

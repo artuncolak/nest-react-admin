@@ -13,13 +13,13 @@ import contentService from '../services/ContentService';
 import courseService from '../services/CourseService';
 
 export default function Course() {
+  const { id } = useParams<{ id: string }>();
+  const { authenticatedUser } = useAuth();
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-
-  const { id } = useParams<{ id: string }>();
-  const { authenticatedUser } = useAuth();
 
   const userQuery = useQuery('user', async () => courseService.findOne(id));
 

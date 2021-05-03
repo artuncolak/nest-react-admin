@@ -14,6 +14,9 @@ export default function Courses() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
+  const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
   const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery(
     ['courses', name, description],
@@ -33,9 +36,6 @@ export default function Courses() {
     formState: { isSubmitting },
     reset,
   } = useForm<CreateCourseRequest>();
-
-  const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
 
   const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
     try {

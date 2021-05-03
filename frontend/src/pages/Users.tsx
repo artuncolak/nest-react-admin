@@ -12,10 +12,14 @@ import userService from '../services/UserService';
 
 export default function Users() {
   const { authenticatedUser } = useAuth();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
+
+  const [addUserShow, setAddUserShow] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   const { data, isLoading } = useQuery(
     ['users', firstName, lastName, username, role],
@@ -33,15 +37,13 @@ export default function Users() {
       refetchInterval: 1000,
     },
   );
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
     reset,
   } = useForm<CreateUserRequest>();
-
-  const [addUserShow, setAddUserShow] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
 
   const saveUser = async (createUserRequest: CreateUserRequest) => {
     try {
