@@ -4,7 +4,7 @@
 
 **Tailwind CSS (First time using it)**
 
-I used it for quickly developing the ui.
+I used it for quickly develop the ui.
 
 **Axios**
 
@@ -12,15 +12,15 @@ I used it for HTTP calls.
 
 **React Feather**
 
-I used it for adding icons to the ui.
+I used it for add icons to the ui.
 
 **React Hook form (First time using it)**
 
-I used it for quickly developing forms without spending too much time for adding states for all the inputs etc.
+I used it for quickly develop forms without spending too much time for adding states for all the inputs etc.
 
 **React Query**
 
-I used it as a data-fetching library for faster development
+I used it as a data fetching library for faster development
 
 **React Router**
 
@@ -72,13 +72,13 @@ $ yarn start
 
 > How long did you spend on the coding project? What would you add to your solution if you had more time? If you didn't spend much time on the coding project, then use this as an opportunity to explain what you would add.
 
-I spent 12 hours to finish the project. I would add more tests to frontend and pagination for the backend.
+I spent 18 hours to finish the project. I would add tests to frontend and pagination to the backend.
 
 > What was the most useful feature that was added to the latest version of your chosen language? Please include a snippet of code that shows how you've used it.
 
 I think, timer promises api that comes with NodeJS V16 is great.
 
-I didn't use this new feature on my code. Down below i have a snippet that shows how to use the new feature. It could be pretty handy on my next projects.
+I didn't use this new feature on this project. Down below i have a snippet that shows how to use the new feature. It could be pretty handy on my next projects.
 
 ```javascript
 // Old

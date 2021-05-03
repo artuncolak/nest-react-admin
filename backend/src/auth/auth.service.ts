@@ -46,6 +46,7 @@ export class AuthService {
       { subject: id, expiresIn: '15m', secret: this.SECRET },
     );
 
+    /* Generates a refresh token and stores it in a httponly cookie */
     const refreshToken = await this.jwtService.signAsync(
       { username, firstName, lastName, role },
       { subject: id, expiresIn: '1y', secret: this.REFRESH_SECRET },

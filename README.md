@@ -17,19 +17,19 @@
 
 **Editor**
 
-| Table    | Read | Write | Update | Delete |
-| -------- | ---- | ----- | ------ | ------ |
-| Users    |      |       |        |        |
-| Courses  | X    | X     | X      |        |
-| Contents | X    | X     | X      |        |
+| Table    | Read   | Write | Update | Delete |
+| -------- | ------ | ----- | ------ | ------ |
+| Users    | itself |       | itself |        |
+| Courses  | X      | X     | X      |        |
+| Contents | X      | X     | X      |        |
 
 **User**
 
-| Table    | Read | Write | Update | Delete |
-| -------- | ---- | ----- | ------ | ------ |
-| Users    |      |       |        |        |
-| Courses  | X    |       |        |        |
-| Contents | X    |       |        |        |
+| Table    | Read   | Write | Update | Delete |
+| -------- | ------ | ----- | ------ | ------ |
+| Users    | itself |       | itself |        |
+| Courses  | X      |       |        |        |
+| Contents | X      |       |        |        |
 
 # Tech Stack
 
@@ -45,6 +45,10 @@
 - Role based authorization
 - Data filtering
 - Fully responsive design
+
+# Authentication
+
+Application generates 2 tokens on login. Access token and refresh token. Access token has a lifetime of 15 minutes and the refresh token has a lifetime of 1 year.
 
 # First Login
 
