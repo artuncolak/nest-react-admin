@@ -12,10 +12,12 @@ export class CreateContentDto {
 
 export class UpdateContentDto {
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   name?: string;
 
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   description?: string;
 }

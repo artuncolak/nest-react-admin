@@ -12,10 +12,12 @@ export class CreateCourseDto {
 
 export class UpdateCourseDto {
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   name?: string;
 
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   description?: string;
 }

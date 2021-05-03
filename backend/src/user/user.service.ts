@@ -33,7 +33,8 @@ export class UserService {
     return User.find({
       where: userQuery,
       order: {
-        firstName: 'DESC',
+        firstName: 'ASC',
+        lastName: 'ASC',
       },
     });
   }
@@ -56,16 +57,21 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const { password, username } = updateUserDto;
+    const currentUser = await this.findById(id);
 
-    if (password) {
-      updateUserDto.password = await bcrypt.hash(password, 10);
+    /* If username is same as before, delete it from the dto */
+    if (currentUser.username === updateUserDto.username) {
+      delete updateUserDto.username;
     }
 
-    if (username) {
-      if (await this.findByUsername(username)) {
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    if (updateUserDto.username) {
+      if (await this.findByUsername(updateUserDto.username)) {
         throw new HttpException(
-          `User with username ${username} is already exists`,
+          `User with username ${updateUserDto.username} is already exists`,
           HttpStatus.BAD_REQUEST,
         );
       }

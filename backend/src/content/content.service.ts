@@ -32,7 +32,8 @@ export class ContentService {
     return await Content.find({
       where: contentQuery,
       order: {
-        name: 'DESC',
+        name: 'ASC',
+        description: 'ASC',
       },
     });
   }
@@ -71,7 +72,8 @@ export class ContentService {
     return await Content.find({
       where: { courseId, ...contentQuery },
       order: {
-        name: 'DESC',
+        name: 'ASC',
+        description: 'ASC',
       },
     });
   }

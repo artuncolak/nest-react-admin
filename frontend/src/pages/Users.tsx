@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader, Plus, Search, X } from 'react-feather';
+import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -50,10 +50,9 @@ export default function Users() {
       await userService.save(createUserRequest);
       setAddUserShow(false);
       setError(null);
+      reset();
     } catch (error) {
       setError(error.response.data.message);
-    } finally {
-      reset();
     }
   };
 
@@ -136,6 +135,7 @@ export default function Users() {
               type="text"
               className="input sm:w-1/2"
               placeholder="First Name"
+              required
               disabled={isSubmitting}
               {...register('firstName')}
             />
@@ -143,6 +143,7 @@ export default function Users() {
               type="text"
               className="input sm:w-1/2"
               placeholder="Last Name"
+              required
               disabled={isSubmitting}
               {...register('lastName')}
             />
@@ -150,6 +151,7 @@ export default function Users() {
           <input
             type="text"
             className="input"
+            required
             placeholder="Username"
             disabled={isSubmitting}
             {...register('username')}
@@ -157,12 +159,14 @@ export default function Users() {
           <input
             type="password"
             className="input"
+            required
             placeholder="Password (min 6 characters)"
             disabled={isSubmitting}
             {...register('password')}
           />
           <select
             className="input"
+            required
             {...register('role')}
             disabled={isSubmitting}
           >

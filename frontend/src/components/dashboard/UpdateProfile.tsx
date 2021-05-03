@@ -20,6 +20,7 @@ export default function UpdateProfile() {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    setValue,
   } = useForm<UpdateUserRequest>();
 
   const handleUpdateUser = async (updateUserRequest: UpdateUserRequest) => {
@@ -29,6 +30,7 @@ export default function UpdateProfile() {
       }
       await userService.update(authenticatedUser.id, updateUserRequest);
       setError(null);
+      setValue('password', '');
       refetch();
     } catch (error) {
       setError(error.response.data.message);

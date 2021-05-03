@@ -21,7 +21,8 @@ export class CourseService {
     return await Course.find({
       where: courseQuery,
       order: {
-        name: 'DESC',
+        name: 'ASC',
+        description: 'ASC',
       },
     });
   }

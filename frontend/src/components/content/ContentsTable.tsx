@@ -24,7 +24,7 @@ export default function ContentsTable({
   const { authenticatedUser } = useAuth();
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [selectedContent, setSelectedContent] = useState<Content>();
+  const [selectedContentId, setSelectedContentId] = useState<string>();
   const [error, setError] = useState<string>();
   const [updateShow, setUpdateShow] = useState<boolean>(false);
 
@@ -33,38 +33,33 @@ export default function ContentsTable({
     handleSubmit,
     formState: { isSubmitting },
     reset,
+    setValue,
   } = useForm<UpdateContentRequest>();
 
-  const handleDeleteContent = async () => {
+  const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      await contentService.delete(courseId, selectedContent.id);
+      await contentService.delete(courseId, selectedContentId);
       setDeleteShow(false);
-      setSelectedContent(null);
-      setError(null);
     } catch (error) {
       setError(error.response.data.message);
     } finally {
       setIsDeleting(false);
-      reset();
     }
   };
 
-  const handleUpdateContent = async (
-    updateContentRequest: UpdateContentRequest,
-  ) => {
+  const handleUpdate = async (updateContentRequest: UpdateContentRequest) => {
     try {
       await contentService.update(
         courseId,
-        selectedContent.id,
+        selectedContentId,
         updateContentRequest,
       );
       setUpdateShow(false);
-      setSelectedContent(null);
+      reset();
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
-      reset();
     }
   };
 
@@ -74,42 +69,43 @@ export default function ContentsTable({
         <Table columns={['Name', 'Description', 'Created']}>
           {isLoading
             ? null
-            : data.map((course) => {
-                const { id, name, description, dateCreated } = course;
-                return (
-                  <tr key={id}>
-                    <TableItem>{name}</TableItem>
-                    <TableItem>{description}</TableItem>
-                    <TableItem>
-                      {new Date(dateCreated).toLocaleDateString()}
-                    </TableItem>
-                    <TableItem className="text-right">
-                      {['admin', 'editor'].includes(authenticatedUser.role) ? (
-                        <button
-                          className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
-                          onClick={() => {
-                            setSelectedContent(course);
-                            setUpdateShow(true);
-                          }}
-                        >
-                          Edit
-                        </button>
-                      ) : null}
-                      {authenticatedUser.role === 'admin' ? (
-                        <button
-                          className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
-                          onClick={() => {
-                            setSelectedContent(course);
-                            setDeleteShow(true);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      ) : null}
-                    </TableItem>
-                  </tr>
-                );
-              })}
+            : data.map(({ id, name, description, dateCreated }) => (
+                <tr key={id}>
+                  <TableItem>{name}</TableItem>
+                  <TableItem>{description}</TableItem>
+                  <TableItem>
+                    {new Date(dateCreated).toLocaleDateString()}
+                  </TableItem>
+                  <TableItem className="text-right">
+                    {['admin', 'editor'].includes(authenticatedUser.role) ? (
+                      <button
+                        className="text-indigo-600 hover:text-indigo-900 focus:outline-none"
+                        onClick={() => {
+                          setSelectedContentId(id);
+
+                          setValue('name', name);
+                          setValue('description', description);
+
+                          setUpdateShow(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    ) : null}
+                    {authenticatedUser.role === 'admin' ? (
+                      <button
+                        className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
+                        onClick={() => {
+                          setSelectedContentId(id);
+                          setDeleteShow(true);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    ) : null}
+                  </TableItem>
+                </tr>
+              ))}
         </Table>
         {!isLoading && data.length < 1 ? (
           <div className="text-center my-5 text-gray-500">
@@ -135,7 +131,7 @@ export default function ContentsTable({
           <button
             className="btn"
             onClick={() => {
-              reset();
+              setError(null);
               setDeleteShow(false);
             }}
             disabled={isDeleting}
@@ -144,7 +140,7 @@ export default function ContentsTable({
           </button>
           <button
             className="btn danger"
-            onClick={handleDeleteContent}
+            onClick={handleDelete}
             disabled={isDeleting}
           >
             {isDeleting ? (
@@ -162,15 +158,16 @@ export default function ContentsTable({
       </Modal>
 
       {/* Update Content Modal */}
-      {selectedContent ? (
+      {selectedContentId ? (
         <Modal show={updateShow}>
           <div className="flex">
             <h1 className="font-semibold mb-3">Update Content</h1>
             <button
               className="ml-auto focus:outline-none"
               onClick={() => {
-                reset();
                 setUpdateShow(false);
+                setError(null);
+                reset();
               }}
             >
               <X size={30} />
@@ -180,20 +177,20 @@ export default function ContentsTable({
 
           <form
             className="flex flex-col gap-5 mt-5"
-            onSubmit={handleSubmit(handleUpdateContent)}
+            onSubmit={handleSubmit(handleUpdate)}
           >
             <input
               type="text"
               className="input"
               placeholder="Name"
-              defaultValue={selectedContent.name}
+              required
               {...register('name')}
             />
             <input
               type="text"
               className="input"
               placeholder="Description"
-              defaultValue={selectedContent.description}
+              required
               disabled={isSubmitting}
               {...register('description')}
             />
