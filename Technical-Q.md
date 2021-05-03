@@ -40,6 +40,10 @@ docker-compose up -d
 
 ## Backend
 
+First you have to postgresql installed on your computer.
+
+Edit the database properties on the backend/.env file.
+
 On backend directory
 
 ### Installing the dependencies
@@ -53,6 +57,10 @@ yarn
 ```bash
 $ yarn start
 ```
+
+Backend will be started on http://localhost:5000
+
+Swagger Docs on http://localhost:5000/api/docs
 
 ## Frontend
 
@@ -70,9 +78,18 @@ yarn
 $ yarn start
 ```
 
+Frontend will be started on http://localhost:3000
+
 > How long did you spend on the coding project? What would you add to your solution if you had more time? If you didn't spend much time on the coding project, then use this as an opportunity to explain what you would add.
 
-I spent 18 hours to finish the project. I would add tests to frontend and pagination to the backend.
+I spent 18 hours to finish the project.
+
+I would add
+1. Unit Tests and e2e tests for the frontend
+2. Pagination
+3. Sorting
+4. Creating custom roles
+
 
 > What was the most useful feature that was added to the latest version of your chosen language? Please include a snippet of code that shows how you've used it.
 

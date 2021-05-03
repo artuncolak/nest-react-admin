@@ -1,4 +1,5 @@
 import {
+  IsAlphanumeric,
   IsBoolean,
   IsEnum,
   IsNotEmpty,
@@ -19,11 +20,12 @@ export class CreateUserDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsAlphanumeric()
   username: string;
 
   @IsNotEmpty()
   @MinLength(6)
+  @IsAlphanumeric()
   password: string;
 
   @IsEnum(Role)
@@ -40,11 +42,12 @@ export class UpdateUserDto {
   lastName?: string;
 
   @IsOptional()
-  @IsString()
+  @IsAlphanumeric()
   username?: string;
 
   @IsOptional()
   @MinLength(6)
+  @IsAlphanumeric()
   password?: string;
 
   @IsOptional()

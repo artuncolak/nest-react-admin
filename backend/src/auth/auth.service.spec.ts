@@ -74,7 +74,9 @@ describe('AuthService', () => {
 
   describe('refresh', () => {
     it('should get login response', async () => {
-      const loginResponse = await service.refresh('token');
+      const req = mocks.createRequest();
+
+      const loginResponse = await service.refresh('token', req.res);
       expect(loginResponse).toEqual({
         token: 'token',
         user: {

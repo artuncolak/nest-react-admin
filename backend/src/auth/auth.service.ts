@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -81,7 +82,10 @@ export class AuthService {
 
     if (!(await bcrypt.compare(refreshToken, user.refreshToken))) {
       response.clearCookie('refresh-token');
-      throw new UnauthorizedException('Refresh token is not valid');
+      throw new HttpException(
+        'Refresh token is not valid',
+        HttpStatus.FORBIDDEN,
+      );
     }
 
     try {
@@ -97,7 +101,10 @@ export class AuthService {
     } catch (error) {
       response.clearCookie('refresh-token');
       await this.userService.setRefreshToken(id, null);
-      throw new UnauthorizedException('Refresh token is not valid');
+      throw new HttpException(
+        'Refresh token is not valid',
+        HttpStatus.FORBIDDEN,
+      );
     }
   }
 }

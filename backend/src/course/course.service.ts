@@ -18,7 +18,12 @@ export class CourseService {
     Object.keys(courseQuery).forEach((key) => {
       courseQuery[key] = ILike(`%${courseQuery[key]}%`);
     });
-    return await Course.find({ where: courseQuery });
+    return await Course.find({
+      where: courseQuery,
+      order: {
+        name: 'DESC',
+      },
+    });
   }
 
   async findById(id: string): Promise<Course> {

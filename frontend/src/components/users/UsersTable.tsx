@@ -32,12 +32,14 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
     try {
       setIsDeleting(true);
       await userService.delete(selectedUser.id);
-      setIsDeleting(false);
       setDeleteShow(false);
       setSelectedUser(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsDeleting(false);
+      reset();
     }
   };
 
@@ -50,9 +52,10 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
       setUpdateShow(false);
       setSelectedUser(null);
       setError(null);
-      reset();
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      reset();
     }
   };
 
@@ -135,7 +138,10 @@ export default function UsersTable({ data, isLoading }: UsersTableProps) {
         <div className="flex flex-row gap-3 justify-end mt-5">
           <button
             className="btn"
-            onClick={() => setDeleteShow(false)}
+            onClick={() => {
+              reset();
+              setDeleteShow(false);
+            }}
             disabled={isDeleting}
           >
             Cancel

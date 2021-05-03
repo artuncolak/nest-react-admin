@@ -49,9 +49,11 @@ export default function Users() {
     try {
       await userService.save(createUserRequest);
       setAddUserShow(false);
-      reset();
+      setError(null);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      reset();
     }
   };
 
@@ -116,6 +118,7 @@ export default function Users() {
             className="ml-auto focus:outline-none"
             onClick={() => {
               reset();
+              setError(null);
               setAddUserShow(false);
             }}
           >
@@ -154,7 +157,7 @@ export default function Users() {
           <input
             type="password"
             className="input"
-            placeholder="Password"
+            placeholder="Password (min 6 characters)"
             disabled={isSubmitting}
             {...register('password')}
           />

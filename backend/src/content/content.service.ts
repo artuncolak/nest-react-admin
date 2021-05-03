@@ -29,7 +29,12 @@ export class ContentService {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);
     });
 
-    return await Content.find({ where: contentQuery });
+    return await Content.find({
+      where: contentQuery,
+      order: {
+        name: 'DESC',
+      },
+    });
   }
 
   async findById(id: string): Promise<Content> {
@@ -63,7 +68,12 @@ export class ContentService {
     Object.keys(contentQuery).forEach((key) => {
       contentQuery[key] = ILike(`%${contentQuery[key]}%`);
     });
-    return await Content.find({ where: { courseId, ...contentQuery } });
+    return await Content.find({
+      where: { courseId, ...contentQuery },
+      order: {
+        name: 'DESC',
+      },
+    });
   }
 
   async update(

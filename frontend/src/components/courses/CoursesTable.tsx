@@ -18,7 +18,7 @@ interface UsersTableProps {
 
 export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   const { authenticatedUser } = useAuth();
-  const [deleteShow, seTableItemeleteShow] = useState<boolean>(false);
+  const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selectedCourse, setSelectedCourse] = useState<Course>();
   const [error, setError] = useState<string>();
@@ -35,13 +35,14 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
     try {
       setIsDeleting(true);
       await courseService.delete(selectedCourse.id);
-      seTableItemeleteShow(false);
       setSelectedCourse(null);
       setError(null);
+      setDeleteShow(false);
     } catch (error) {
       setError(error.response.data.message);
     } finally {
       setIsDeleting(false);
+      reset();
     }
   };
 
@@ -55,6 +56,8 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      reset();
     }
   };
 
@@ -92,7 +95,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                           className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                           onClick={() => {
                             setSelectedCourse(course);
-                            seTableItemeleteShow(true);
+                            setDeleteShow(true);
                           }}
                         >
                           Delete
@@ -126,7 +129,11 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
         <div className="flex flex-row gap-3 justify-end mt-5">
           <button
             className="btn"
-            onClick={() => seTableItemeleteShow(false)}
+            onClick={() => {
+              reset();
+              setSelectedCourse(null);
+              setDeleteShow(false);
+            }}
             disabled={isDeleting}
           >
             Cancel
@@ -159,6 +166,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
               className="ml-auto focus:outline-none"
               onClick={() => {
                 reset();
+                setSelectedCourse(null);
                 setUpdateShow(false);
               }}
             >

@@ -22,7 +22,7 @@ export default function ContentsTable({
   courseId,
 }: ContentsTableProps) {
   const { authenticatedUser } = useAuth();
-  const [deleteShow, seTableItemeleteShow] = useState<boolean>(false);
+  const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selectedContent, setSelectedContent] = useState<Content>();
   const [error, setError] = useState<string>();
@@ -39,12 +39,14 @@ export default function ContentsTable({
     try {
       setIsDeleting(true);
       await contentService.delete(courseId, selectedContent.id);
-      setIsDeleting(false);
-      seTableItemeleteShow(false);
+      setDeleteShow(false);
       setSelectedContent(null);
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
+    } finally {
+      setIsDeleting(false);
+      reset();
     }
   };
 
@@ -62,6 +64,7 @@ export default function ContentsTable({
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
+      reset();
     }
   };
 
@@ -97,7 +100,7 @@ export default function ContentsTable({
                           className="text-red-600 hover:text-red-900 ml-3 focus:outline-none"
                           onClick={() => {
                             setSelectedContent(course);
-                            seTableItemeleteShow(true);
+                            setDeleteShow(true);
                           }}
                         >
                           Delete
@@ -131,7 +134,10 @@ export default function ContentsTable({
         <div className="flex flex-row gap-3 justify-end mt-5">
           <button
             className="btn"
-            onClick={() => seTableItemeleteShow(false)}
+            onClick={() => {
+              reset();
+              setDeleteShow(false);
+            }}
             disabled={isDeleting}
           >
             Cancel

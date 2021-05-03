@@ -84,7 +84,7 @@ export default function UpdateProfile() {
             <input
               type="password"
               className="input w-full mt-1"
-              placeholder="Password"
+              placeholder="Password (min 6 characters)"
               disabled={isSubmitting}
               {...register('password')}
             />

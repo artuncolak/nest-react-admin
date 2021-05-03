@@ -11,25 +11,25 @@
 
 | Table    | Read | Write | Update | Delete |
 | -------- | ---- | ----- | ------ | ------ |
-| Users    | X    | X     | X      | X      |
-| Courses  | X    | X     | X      | X      |
-| Contents | X    | X     | X      | X      |
+| Users    | ✓    | ✓     | ✓      | ✓      |
+| Courses  | ✓    | ✓     | ✓      | ✓      |
+| Contents | ✓    | ✓     | ✓      | ✓      |
 
 **Editor**
 
 | Table    | Read   | Write | Update | Delete |
 | -------- | ------ | ----- | ------ | ------ |
 | Users    | itself |       | itself |        |
-| Courses  | X      | X     | X      |        |
-| Contents | X      | X     | X      |        |
+| Courses  | ✓      | ✓     | ✓      |        |
+| Contents | ✓      | ✓     | ✓      |        |
 
 **User**
 
 | Table    | Read   | Write | Update | Delete |
 | -------- | ------ | ----- | ------ | ------ |
 | Users    | itself |       | itself |        |
-| Courses  | X      |       |        |        |
-| Contents | X      |       |        |        |
+| Courses  | ✓      |       |        |        |
+| Contents | ✓      |       |        |        |
 
 # Tech Stack
 
@@ -146,6 +146,8 @@ yarn start
 ```
 
 Start the test
+
+Test will login as **username:** admin, **password:** admin123 and create users with usernames test and test2. If you change username and password of admin or if you add users with username test and test2. Tests will fail.
 
 ```bash
 yarn test:e2e

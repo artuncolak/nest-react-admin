@@ -78,7 +78,7 @@ describe('AuthController', () => {
     it('should get login response', async () => {
       const req = mocks.createRequest();
 
-      const loginResponse = await controller.refresh(req);
+      const loginResponse = await controller.refresh(req, req.res);
       expect(loginResponse).toEqual({
         token: 'token',
         user: {
